@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FinalBlog2</title>
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <!-- ======= ======= ======= body ======= ======= ======= -->
+  <body>
+
+      <!-- == header == -->
+      <div id="header">
+          <h1>Rails Final Blog 3!</h1>
+          <%= render :partial => '/users/menu' %>
+      </div>
+
+      <!-- == yield == -->
+      <div id="yield" class="section">
+          <%= yield %>
+      </div>
+
+      <!-- == footer == -->
+      <div id="footer" class="section">
+          <p id="notice"><%= notice %></p>
+      </div>
+
+  </body>
+</html>
