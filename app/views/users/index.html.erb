@@ -4,27 +4,25 @@
     <% user_post = @postsArray[index].first %>
     <% puts " ** user_post.inspect: #{user_post.inspect}" %>
     <div class="user-box">
-        <div class="name-box">
-            <p class="name-link">
-                <%= link_to user.fname + " " + user.lname, user %>
-                <%= link_to "Edit", edit_user_path(user), class: "mini-link" %>
-                <%= link_to 'Delete', user, class: "mini-link", method: :delete, data: { confirm: 'Are you sure?' } %>
-            </p>
-        </div>
         <div class="title-box">
-            <p class="post-title">
+            <div class="name-link">
+                <%= link_to user.fname + " " + user.lname, user %>
+            </div>
+            <div class="post-title">
                 <% if user_post != "n" %>
                     <%= user_post.title %>
                 <% else %>
-                    no posts for this user
+                    <p class="empty-text">no posts for this user</p>
                 <% end %>
-            </p>
+            </div>
+            <div class="user-links">
+                <%= link_to "Edit", edit_user_path(user), class: "mini-link" %>
+                <%= link_to 'Delete', user, class: "mini-link", method: :delete, data: { confirm: 'Are you sure?' } %>
+            </div>
         </div>
         <div class="post-content">
             <% if user_post != "n" %>
                 <%= user_post.content %>
-            <% else %>
-                no posts for this user
             <% end %>
         </div>
     </div>
