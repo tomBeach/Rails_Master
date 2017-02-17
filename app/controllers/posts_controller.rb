@@ -1,15 +1,18 @@
 class PostsController < ApplicationController
-  before_action :set_posts
-  before_action :set_post, only: [:show, :edit, :update, :destroy]
+    before_action :set_posts
+    before_action :set_post, only: [:show, :edit, :update, :destroy]
 
-  # GET users/1/posts
-  def index
-    @posts = @user.posts
-  end
+    # GET users/1/posts
+    def index
+        @posts = @user.posts
+    end
 
-  # GET users/1/posts/1
-  def show
-  end
+    # GET users/1/posts/1
+    def show
+        puts "******* show *******"
+        @comments = @post.comments
+        puts " ** @comments.inspect: #{@comments.inspect}"
+    end
 
   # GET users/1/posts/new
   def new

@@ -1,50 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-
-    # ======= GET /home =======
-    def home
-        puts "******* home *******"
-        # @user = User.new
-        @users = User.all
-        @bc = User.find(1)
-        puts " ** @bc: #{@bc}"
-        puts " ** @bc.posts: #{@bc.posts}"
-        puts " ** @bc.comments: #{@bc.comments}"
-        puts " ** @bc.comments.find(9): #{@bc.comments.find(9)}"
-        puts " ** @bc.comments.where(post_id: 4): #{@bc.comments.where(post_id: 4)}"
-        puts " ** @bc.posts.exists?(id: 5): #{@bc.posts.exists?(id: 5)}"
-        puts " ** @bc.posts.exists?(id: 50): #{@bc.posts.exists?(id: 50)}"
-        puts " ** @bc.posts.exists?(title: 'First Post'): #{@bc.posts.exists?(title: 'First Post')}"
-        puts " ** @bc.posts.exists?(title: 'Third Post'): #{@bc.posts.exists?(title: 'Third Post')}"
-    end
-
-    # ======= GET /user =======
-    def signin
-        puts "******* signin *******"
-        @user = User.where(username: signin_params[:username]).first
-        puts "******* USER OK *******"
-        if @user && User.where(password: signin_params[:password]).first
-            puts "\n******* PSWD OK *******"
-            session[:user_id] = @user.id
-            redirect_to users_path, :flash => { :success => "Welcome!" }
-        else
-            redirect_to "/"
-        end
-    end
-
-    # ======= POST /signup =======
-    def signup
-        puts "\n******* signup *******"
-        @user = User.new(user_params)
-        redirect_to :home
-    end
-
-    # ======= GET /signout =======
-    def signout
-        puts "******* signout *******"
-        session[:user_id] = nil
-        redirect_to :home
-    end
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     # ======= GET /users =======
     def index
@@ -59,22 +14,25 @@ class UsersController < ApplicationController
                 @postsArray << "no_post"
             end
         end
-        puts " ** @postsArray.inspect: #{@postsArray.inspect}"
     end
 
-  # GET /users/1
-  # GET /users/1.json
-  def show
-  end
+    # ======= ======= ======= CRUD ======= =======  =======
+    # ======= ======= ======= CRUD ======= =======  =======
+    # ======= ======= ======= CRUD ======= =======  =======
 
-  # GET /users/new
-  def new
-    @user = User.new
-  end
+    # GET /users/1
+    # GET /users/1.json
+    def show
+    end
 
-  # GET /users/1/edit
-  def edit
-  end
+    # GET /users/new
+    def new
+        @user = User.new
+    end
+
+    # GET /users/1/edit
+    def edit
+    end
 
   # POST /users
   # POST /users.json
@@ -116,6 +74,45 @@ class UsersController < ApplicationController
     end
   end
 
+  # ======= ======= ======= UTILITIES ======= =======  =======
+  # ======= ======= ======= UTILITIES ======= =======  =======
+  # ======= ======= ======= UTILITIES ======= =======  =======
+
+  # ======= GET /home =======
+  def home
+      puts "******* home *******"
+      # @user = User.new
+      @users = User.all
+  end
+
+  # ======= GET /user =======
+  def signin
+      puts "******* signin *******"
+      @user = User.where(username: signin_params[:username]).first
+      puts "******* USER OK *******"
+      if @user && User.where(password: signin_params[:password]).first
+          puts "\n******* PSWD OK *******"
+          session[:user_id] = @user.id
+          redirect_to users_path, :flash => { :success => "Welcome!" }
+      else
+          redirect_to "/"
+      end
+  end
+
+  # ======= POST /signup =======
+  def signup
+      puts "\n******* signup *******"
+      @user = User.new(user_params)
+      redirect_to :home
+  end
+
+  # ======= GET /signout =======
+  def signout
+      puts "******* signout *******"
+      session[:user_id] = nil
+      redirect_to :home
+  end
+
   private
       # Use callbacks to share common setup or constraints between actions.
       def signin_params
@@ -124,13 +121,13 @@ class UsersController < ApplicationController
       end
 
       def set_user
-          puts "******* index *******"
+          puts "******* set_user *******"
           @user = User.find(params[:id])
       end
 
       # Never trust parameters from the scary internet, only allow the white list through.
       def user_params
-          puts "******* index *******"
+          puts "******* user_params *******"
           params.require(:user).permit(:fname, :lname, :email, :username, :password)
       end
 end

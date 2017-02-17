@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :users do
         resources :posts
     end
-    # resources :comments
+    resources :comments
 
     get "/" => "users#home"
     get "/home" => "users#home"

@@ -5,7 +5,8 @@ User.create([
     { fname:"Bill", lname:"Clinton", email:"wjc@gmail.com", username:"wjc", password:"wjc123" },
     { fname:"George", lname:"Bush", email:"gwb@gmail.com", username:"gwb", password:"gwb123" },
     { fname:"Barak", lname:"Obama", email:"bho@gmail.com", username:"bho", password:"bho123" },
-    { fname:"The", lname:"Donald", email:"djt@gmail.com", username:"djt", password:"djt123" }
+    { fname:"The", lname:"Donald", email:"djt@gmail.com", username:"djt", password:"djt123" },
+    { fname:"Tom", lname:"Beach", email:"teb@gmail.com", username:"teb", password:"teb123" }
 ])
 
 # Post user_id:integer title:string content:text created_at:timestamp updated_at:timestamp

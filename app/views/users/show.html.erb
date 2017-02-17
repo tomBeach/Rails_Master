@@ -1,2 +1,15 @@
+<h1><%= @user.fname + " " + @user.lname %></h1>
+
+<div id="user-data">
+    <div class="data"><div class="data-label">firstname</div>
+        <div class="data-value"><%= @user.fname %></div></div>
+    <div class="data"><div class="data-label">lastname</div>
+        <div class="data-value"><%= @user.lname %></div></div>
+    <div class="data"><div class="data-label">email</div>
+        <div class="data-value"><%= @user.email %></div></div>
+    <div class="data"><div class="data-label">username</div>
+        <div class="data-value"><%= @user.username %></div></div>
+</div>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

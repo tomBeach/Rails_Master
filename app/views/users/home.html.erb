@@ -1,11 +1,11 @@
 <h1>Home</h1>
 
-<div id="signin-signup">
-    <% if !session[:user_id]%>
+<% if !session[:user_id]%>
+    <div id="signin-signup">
         <%= form_tag("/signin", method: "get") do %>
             <p class="signin-group"><%= text_field_tag :username, value = "teb" %><%= label_tag(:username, "username") %></p>
             <p class="signin-group"><%= text_field_tag :password, value = "teb123" %><%= label_tag(:password, "password") %></p>
             <%= submit_tag "Login" %>
         <% end %>
-    <% end %>
-</div>
+    </div>
+<% end %>

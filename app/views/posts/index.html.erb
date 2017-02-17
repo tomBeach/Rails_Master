@@ -1,27 +1,26 @@
-<h1>Listing posts</h1>
-
-<table>
-  <tr>
-    <th>user</th>
-    <th>Title</th>
-    <th>Content</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<h1><%= @user.fname + " " + @user.lname + " Posts"%></h1>
 
 <% @posts.each do |post| %>
-  <tr>
-    <td><%= post.user_id %></td>
-    <td><%= post.title %></td>
-    <td><%= post.content %></td>
-    <td><%= link_to 'Show', [post.user, post] %></td>
-    <td><%= link_to 'Edit', edit_user_post_path(post.user, post) %></td>
-    <td><%= link_to 'Destroy', [post.user, post], :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
+    <div class="user-box">
+        <div class="title-box">
+            <div class="id-box">
+                <%= post.user_id %>
+            </div>
+            <div class="post-title">
+                <%= link_to post.title, user_post_path(post.user, post) %>
+            </div>
+            <div class="user-links">
+                <%= link_to 'Edit', edit_user_post_path(post.user, post), class: "mini-link" %>
+                <%= link_to 'Delete', [post.user, post], class: "mini-link", :confirm => 'Are you sure?', :method => :delete %>
+            </div>
+        </div>
+        <div class="post-content">
+            <%= post.content %>
+        </div>
+    </div>
 <% end %>
-</table>
 
 <br />
 
+<%= link_to "Back", request.referer.present? ? request.referer : "/home" %> |
 <%= link_to 'New Post', new_user_post_path(params[:user_id]) %>

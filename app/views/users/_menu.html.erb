@@ -1,6 +1,7 @@
 <% if session[:user_id]%>
     <% @user = User.find(session[:user_id]) %>
     <% @posts = @user.posts %>
+    <%= link_to "Home", "/home" %>
     <%= link_to "Sign out", signout_path(@user) %>
     <%= link_to 'All Users', users_path %> |
     <%= link_to 'User Posts', user_posts_path(@user, @posts) %>

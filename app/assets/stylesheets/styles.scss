@@ -63,17 +63,28 @@ input[type="button"], input[type="submit"] {
 }
 
 /* ======= ======= =======  profile  ======= ======= ======= */
+.data {
+    margin: 10px;
+}
 .data-label, .data-value {
     margin: 0 5px;
     display: inline-block;
-    font-size: 32px;
 }
 .data-label {
     width: 160px;
+    font-size: 16px;
 }
 .data-value {
     width: 30%;
-    color: red;
+    font-size: 22px;
+    color: purple;
+}
+.info-text {
+    margin: 20px;
+    font-size: 22px;
+}
+#post_content {
+    font-size: 16px;
 }
 
 /* ======= ======= =======  posts  ======= ======= ======= */
@@ -127,6 +138,41 @@ input[type="button"], input[type="submit"] {
 .empty-text {
     margin: 0;
     font-size: 12px;
+}
+
+/* ======= ======= =======  posts  ======= ======= ======= */
+.id-box {
+    float: left;
+    width: 2%;
+    margin: 2px 10px;
+    font-size: 12px;
+}
+.post-title > a {
+    float: left;
+    margin: 0 10px;
+    padding: 5px;
+    font-size: 20px;
+    color: purple;
+    text-decoration: none;
+}
+.post-title > a:hover {
+    color: white;
+    background-color: thistle;
+}
+
+/* ======= ======= =======  comments  ======= ======= ======= */
+.comment-box {
+    width: 80%;
+    height: auto;
+    min-height: 60px;
+    border: 1px solid #eee;
+}
+.comment-user-box {
+    margin-left: 60px;
+}
+.comment-user {
+    width: 100%;
+    padding-top: 10px;
 }
 
 /* ======= ======= =======  users  ======= ======= ======= */
