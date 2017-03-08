@@ -1,4 +1,48 @@
 
+class StatesController < ApplicationController
+    # after_action :update_state
+
+    @ORDER_STATES = ["unplaced", "submitted", "processing", "shipped", "completed", "deleted"]
+
+    def init
+        puts "******* init *******"
+        @state_index = 0
+        @STATE = @ORDER_STATES[@state_index]
+        render :init
+    end
+
+    def place_order
+        puts "******* place_order *******"
+        @state_index = 1
+        @STATE = @ORDER_STATES[@state_index]
+        render :init
+    end
+
+    def cancel_order
+        puts "******* cancel_order *******"
+        @state_index = 0
+        @STATE = @ORDER_STATES[@state_index]
+        render :init
+    end
+
+    def update_state
+        # puts "******* update_state *******"
+        # if !@state_index
+        #     @state_index = 0
+        # end
+        # @STATE = @ORDER_STATES[@state_index]
+        # render :init
+    end
+
+end
+
+
+
+
+<%= link_to "New Comment", {:controller => "comment", :action => "new", :post_id => @post.id }%>
+
+<%= link_to 'New Comment', new_comment_path(@post, @user) %>
+
 
   <div class="field">
     <%= f.label :user_id %><br />

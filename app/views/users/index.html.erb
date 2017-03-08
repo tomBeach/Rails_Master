@@ -1,34 +1,29 @@
 <h1>Users</h1>
 
-<% @users.each_with_index do |user, index| %>
-    <% user_post = @postsArray[index].first %>
-    <% puts " ** user_post.inspect: #{user_post.inspect}" %>
-    <div class="user-box">
-        <div class="title-box">
-            <div class="name-link">
-                <%= link_to user.fname + " " + user.lname, user_posts_path(user) %>
-            </div>
-            <div class="post-title">
-                <% if user_post != "n" %>
-                    <%= user_post.title %>
-                <% else %>
-                    <p class="empty-text">no posts for this user</p>
-                <% end %>
-            </div>
-            <div class="user-links">
-                <%= link_to "Edit", edit_user_path(user), class: "mini-link" %>
-                <%= link_to 'Delete', user, class: "mini-link", method: :delete, data: { confirm: 'Are you sure?' } %>
-            </div>
-        </div>
-        <div class="post-content">
-            <% if user_post != "n" %>
-                <%= user_post.content %>
-            <% end %>
-        </div>
-    </div>
-<% end %>
+<table id="user-table">
+  <thead>
+    <tr>
+      <th id="user">user</th>
+      <th id="posts">posts</th>
+      <th id="edit">edit</th>
+      <th id="delete">delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= link_to user.fname + " " + user.lname, user %></td>
+        <td><%= link_to user.fname + "'s Posts", user_posts_path(user_id: user.id) %></td>
+        <td><%= link_to 'Edit', edit_user_path(user) %></td>
+        <td><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
 <br>
 
+<%= link_to 'New User', new_user_path %> |
 <%= link_to "Back", request.referer.present? ? request.referer : "/home" %> |
-<%= link_to 'New User', new_user_path %>
+<%= link_to 'Home', "/home" %>

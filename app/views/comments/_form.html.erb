@@ -1,32 +1,33 @@
 <%= form_for(@comment) do |f| %>
+    <% user_id = session[:user_id] %>
+    <% post_id = @post[:id] %>
     <div class="user-box">
         <div class="title-box">
             <div class="id-box">
                 <%= @comment.post_id %>
             </div>
             <div class="user-links">
-                <%= link_to 'Delete', @comment, class: "mini-link", :confirm => 'Are you sure?', :method => :delete %>
+                &nbsp;
             </div>
         </div>
         <div class="post-content">
             <%= f.text_area :content, size: "80x10"  %>
         </div>
         <div class="post-content">
-            <%= f.hidden_field :user_id %>
-            <%= f.hidden_field :post_id %>
+            <%= f.hidden_field :user_id, :value => user_id %>
+            <%= f.hidden_field :post_id, :value => post_id %>
             <%= f.submit %>
         </div>
     </div>
 
-  <% if @comment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
-
-      <ul>
-      <% @comment.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <% if @comment.errors.any? %>
+        <div id="error_explanation">
+        <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+        <ul>
+            <% @comment.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
 <% end %>

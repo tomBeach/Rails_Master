@@ -1,6 +1,7 @@
 <h1>Home</h1>
 
-<% if !session[:user_id]%>
+<%# if !session[:user_id]%>
+<% if !current_user %>
     <div id="signin-signup">
         <%= form_tag("/signin", method: "get") do %>
             <p class="signin-group"><%= text_field_tag :username, value = "teb" %><%= label_tag(:username, "username") %></p>
@@ -8,4 +9,39 @@
             <%= submit_tag "Login" %>
         <% end %>
     </div>
+
+<% else %>
+
+    <% @users.each_with_index do |user, index| %>
+        <% user_post = @postsArray[index].first %>
+        <% puts " ** user_post.inspect: #{user_post.inspect}" %>
+        <!-- ======= ======= user ======= ======= -->
+        <div class="user-box">
+            <div class="title-box">
+                <div class="name-link">
+                    <%= link_to user.fname + " " + user.lname, user_posts_path(user) %>
+                </div>
+                <div class="post-title">
+                    <% if user_post != "n" %>
+                        <%= user_post.title %>
+                    <% else %>
+                        <p class="empty-text">no posts for this user</p>
+                    <% end %>
+                </div>
+                <div class="user-links">
+                    <%= link_to "profile", user_path(user) %>
+                </div>
+            </div>
+            <!-- ======= ======= first post ======= ======= -->
+            <div class="post-content">
+                <% if user_post != "n" %>
+                    <%= user_post.content %>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+    <br>
+    <%= link_to "Back", request.referer.present? ? request.referer : "/home" %> |
+    <%= link_to 'New User', new_user_path %>
+
 <% end %>

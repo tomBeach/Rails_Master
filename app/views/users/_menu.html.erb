@@ -1,8 +1,17 @@
-<% if session[:user_id]%>
-    <% @user = User.find(session[:user_id]) %>
+<% if user_signed_in? %>
+    <% @user = current_user %>
     <% @posts = @user.posts %>
-    <%= link_to "Home", "/home" %>
-    <%= link_to "Sign out", signout_path(@user) %>
+    <%= link_to "Home", "/home" %> |
+    <%= link_to('Sign out', destroy_user_session_path, :method => :delete) %>
     <%= link_to 'All Users', users_path %> |
-    <%= link_to 'User Posts', user_posts_path(@user, @posts) %>
+    <%= link_to 'All User Posts', "/home" %> |
+    <%= link_to 'My Posts', user_posts_path(@user, @posts) %> |
+    <%= link_to 'State Machines', "/state_machines" %> |
+    <%= link_to 'Join Tables', "/join_tables" %> |
+    <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
+    <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+    <p class="subhead">Welcome <strong><%= current_user.fname %></strong> !</p>
+<% else %>
+    <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
+    <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
 <% end %>

@@ -1,0 +1,12 @@
+<h1>states</h1>
+
+<div class="state-menu">
+    <%= link_to "Place", "/update_state/submit" %><span class="pipe"> | </span>
+    <%= link_to "Process", "/update_state/process" %><span class="pipe"> | </span>
+    <%= link_to "Ship", "/update_state/ship" %><span class="pipe"> | </span>
+    <%= link_to "Deliver", "/update_state/deliver" %><span class="pipe"> | </span>
+    <%= link_to "Confirm", "/update_state/confirm" %><span class="pipe"> | </span>
+    <%= link_to "Cancel", "/update_state/cancel" %>
+</div>
+
+<%= render 'state' %>

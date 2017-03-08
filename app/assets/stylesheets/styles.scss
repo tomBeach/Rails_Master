@@ -19,6 +19,10 @@ body {
     padding: 10px;
     background-color: #eee;
 }
+.subhead {
+    margin: 5px 10px;
+    color: purple;
+}
 #header {
     height: 100px;
     margin: 20px 20px 0 20px;
@@ -32,6 +36,39 @@ body {
 }
 #footer {
     background-color: #ddd;
+}
+
+/* ======= ======= =======  states  ======= ======= ======= */
+.pipe {
+    font-size: 42px;
+    color: red;
+}
+.state-menu {
+    width: 80%;
+    height: 30px;
+    margin: 20px;
+    padding: 10px;
+    font-size: 24px;
+    background-color: thistle;
+}
+.state-menu > a {
+    margin-top: 0;
+    color: white;
+    text-decoration: none;
+}
+.state-text {
+    width: 160px;
+    height: 50px;
+    margin: 20px;
+    padding: 10px 0;
+    padding-top: 30px;
+    text-align: center;
+    background-color: thistle;
+}
+.state-text > p {
+    margin: 0;
+    font-size: 24px;
+    color: purple;
 }
 
 /* ======= ======= =======  signin-signup  ======= ======= ======= */
@@ -117,6 +154,11 @@ input[type="button"], input[type="submit"] {
 .user-links {
     float: right;
     width: 200px;
+    height: 100%;
+}
+.post-user-links {
+    float: right;
+    width: 300px;
     height: 100%;
 }
 .mini-link {

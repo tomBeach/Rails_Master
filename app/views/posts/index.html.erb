@@ -9,9 +9,12 @@
             <div class="post-title">
                 <%= link_to post.title, user_post_path(post.user, post) %>
             </div>
-            <div class="user-links">
-                <%= link_to 'Edit', edit_user_post_path(post.user, post), class: "mini-link" %>
-                <%= link_to 'Delete', [post.user, post], class: "mini-link", :confirm => 'Are you sure?', :method => :delete %>
+            <div class="post-user-links">
+                <%= link_to "Comment", "/new_comment/#{post.id }", class: "mini-link"%>
+                <% if post[:user_id] == session[:user_id] %>
+                    <%= link_to 'Edit', edit_user_post_path(post.user, post), class: "mini-link" %>
+                    <%= link_to 'Delete', [post.user, post], class: "mini-link", :confirm => 'Are you sure?', :method => :delete %>
+                <% end %>
             </div>
         </div>
         <div class="post-content">

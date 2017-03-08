@@ -1,22 +1,28 @@
 <%= form_for(user) do |f| %>
-  <% if user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+    <% if user.errors.any? %>
+        <div id="error_explanation">
+        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+            <% user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
 
-      <ul>
-      <% user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-    <div class="actions">
-        <p><%= f.text_field :fname %><%= label(:fname, "firstname") %></p>
-        <p><%= f.text_field :lname %><%= label(:lname, "lastname") %></p>
-        <p><%= f.text_field :email %><%= label(:email, "email") %></p>
-        <p><%= f.text_field :username %><%= label(:username, "username") %></p>
-        <p><%= f.text_field :password %><%= label(:password, "password") %></p>
-        <%= f.submit %>
-    </div>
+    <div id="user-data">
+      <div class="data"><div class="data-label"><%= label(:fname, "firstname") %></div>
+          <div class="data-value"><%= f.text_field :fname %></div></div>
+      <div class="data"><div class="data-label"><%= label(:lname, "lastname") %></div>
+          <div class="data-value"><%= f.text_field :lname %></div></div>
+      <div class="data"><div class="data-label"><%= label(:email, "email") %></div>
+          <div class="data-value"><%= f.text_field :email %></div></div>
+      <div class="data"><div class="data-label"><%= label(:email_confirmation, "email confirm") %></div>
+          <div class="data-value"><%= f.text_field :email_confirmation, :value => user[:email] %></div></div>
+      <div class="data"><div class="data-label"><%= label(:username, "username") %></div>
+          <div class="data-value"><%= f.text_field :username %></div></div>
+      <div class="data"><div class="data-label"><%= label(:password, "password") %></div>
+          <div class="data-value"><%= f.text_field :password %></div></div>
+    <div class="data"><%= f.submit %></div>
+  </div>
 <% end %>
