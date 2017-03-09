@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>FinalBlog2</title>
-    <%= csrf_meta_tags %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+    <head>
+        <title>FinalBlog2</title>
+        <%= csrf_meta_tags %>
+        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    </head>
 
-  <!-- ======= ======= ======= body ======= ======= ======= -->
-  <body>
+    <!-- ======= ======= ======= body ======= ======= ======= -->
+    <body>
 
-      <!-- == header == -->
-      <div id="header">
-          <h1>Rails Final Blog 3!</h1>
-          <%= favicon_link_tag 'favicon.ico' %>
-          <%= render :partial => '/users/menu' %>
-      </div>
+        <!-- == header == -->
+        <div id="header">
+            <h1>Rails Final Blog 3!</h1>
+            <%= favicon_link_tag 'favicon.ico' %>
+            <%= render :partial => '/users/menu' %>
+        </div>
 
-      <!-- == yield == -->
-      <div id="yield" class="section">
-          <%= yield %>
-      </div>
+        <!-- == yield == -->
+        <div id="yield" class="section">
+            <%= yield %>
+        </div>
 
-      <!-- == footer == -->
-      <div id="footer" class="section">
-          <% if notice %>
-            <p class="alert alert-success"><%= notice %></p>
-          <% end %>
-          <% if alert %>
-            <p class="alert alert-danger"><%= alert %></p>
-          <% end %>
-          <p id="notice"><%= notice %></p>
-      </div>
+        <!-- == footer == -->
+        <div id="footer" class="section">
+            <% if notice %>
+                <p id="notice"><%= notice %></p>
+            <% end %>
+            <% if alert %>
+                <p class="alert alert-danger"><%= alert %></p>
+            <% end %>
+        </div>
 
-  </body>
+    </body>
 </html>

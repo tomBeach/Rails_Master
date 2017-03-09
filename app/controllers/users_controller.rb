@@ -1,13 +1,14 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
     # before_action :authenticate_user!
-    # after_validation :geocode_address
 
     # ======= GET /users =======
     def home
         puts "/n******* home *******"
         puts " ** current_user.inspect: #{current_user.inspect}"
+
         @postsArray = []
+        @tags = Tag.all
         @users = User.all
         @users.each do |user|
             posts = user.posts
@@ -21,9 +22,9 @@ class UsersController < ApplicationController
 
     # ======= GET /index =======
     def index
-      puts "******* index *******"
-      # @user = User.new
-      @users = User.all
+        puts "******* index *******"
+        # @user = User.new
+        @users = User.all
     end
 
     # ======= ======= ======= CRUD ======= =======  =======

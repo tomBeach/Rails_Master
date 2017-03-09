@@ -15,6 +15,24 @@
     <% @users.each_with_index do |user, index| %>
         <% user_post = @postsArray[index].first %>
         <% puts " ** user_post.inspect: #{user_post.inspect}" %>
+
+        <!-- ======= ======= tags ======= ======= -->
+        <% if user_post != "n" %>
+            <% post_tags = user_post.tags %>
+            <% if post_tags %>
+                <% puts " ** post_tags.inspect: #{post_tags.inspect}" %>
+                <p class="empty-text"> | 
+                <% post_tags.each do |tag| %>
+                    <%= tag.tag_name %> |
+                <% end %>
+                </p>
+            <% else %>
+                <% puts " ** NO TAGS ** " %>
+                <p class="empty-text">no tags for this post</p>
+            <% end %>
+        <% end %>
+
+
         <!-- ======= ======= user ======= ======= -->
         <div class="user-box">
             <div class="title-box">
@@ -32,12 +50,14 @@
                     <%= link_to "profile", user_path(user) %>
                 </div>
             </div>
+
             <!-- ======= ======= first post ======= ======= -->
             <div class="post-content">
                 <% if user_post != "n" %>
                     <%= user_post.content %>
                 <% end %>
             </div>
+
         </div>
     <% end %>
     <br>

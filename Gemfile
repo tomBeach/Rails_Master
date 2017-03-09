@@ -24,10 +24,6 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
 # devise authentication
 gem 'devise'
 
@@ -40,20 +36,20 @@ gem 'pg'
 # geolocation methods
 gem 'geocoder'
 
+group :development do
+  gem 'rb-readline'
+  gem 'nested_scaffold'
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
+  gem 'listen', '~> 3.0.5'
+  # Spring keeps app running in  background (see https://github.com/rails/spring)
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
-end
-
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'rb-readline'
-  gem 'nested_scaffold'
-  gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.0.5'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
 group :production do
