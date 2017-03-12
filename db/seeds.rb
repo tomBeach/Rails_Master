@@ -33,3 +33,31 @@ Comment.create([
     { user_id:1, post_id:4, content:"Integer id quam." },
     { user_id:2, post_id:5, content:"Proin sodales libero eget ante. Nulla quam. Aenean laoreet. Vestibulum nisi lectus, commodo ac, facilisis ac, ultricies eu, pede." }
 ])
+
+Tag.destroy_all
+Tag.create([
+    { tag_name: "like", tag_rank:1 },
+    { tag_name: "dislike", tag_rank:2 },
+    { tag_name: "politics", tag_rank:3 },
+    { tag_name: "nature", tag_rank:4 },
+    { tag_name: "travel", tag_rank:5 },
+    { tag_name: "cities", tag_rank:6 },
+    { tag_name: "art", tag_rank:7 }
+])
+
+PostTag.destroy_all
+PostTag.create([
+    { post_id: 1, tag_id: 1 },
+    { post_id: 1, tag_id: 2 },
+    { post_id: 1, tag_id: 3 },
+    { post_id: 1, tag_id: 4 },
+    { post_id: 1, tag_id: 5 },
+    { post_id: 1, tag_id: 6 },
+    { post_id: 1, tag_id: 7 },
+    { post_id: 2, tag_id: 1 },
+    { post_id: 2, tag_id: 3 },
+    { post_id: 2, tag_id: 5 },
+    { post_id: 3, tag_id: 2 },
+    { post_id: 3, tag_id: 3 },
+    { post_id: 3, tag_id: 4 },
+])
