@@ -21,7 +21,7 @@
             <% post_tags = user_post.tags %>
             <% if post_tags %>
                 <% puts " ** post_tags.inspect: #{post_tags.inspect}" %>
-                <p class="empty-text"> | 
+                <p class="empty-text"> |
                 <% post_tags.each do |tag| %>
                     <%= tag.tag_name %> |
                 <% end %>
@@ -61,7 +61,6 @@
         </div>
     <% end %>
     <br>
-    <%= link_to "Back", request.referer.present? ? request.referer : "/home" %> |
-    <%= link_to 'New User', new_user_path %>
+    <%= link_to "Back", request.referer.present? ? request.referer : "/home" %>
 
 <% end %>
