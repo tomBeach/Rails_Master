@@ -1,0 +1,56 @@
+<form class="upload"  data-form-data="{
+        'key':'uploads/e4eb02a8-06fc-408f-9177-916e35c5cf95/${filename}',
+        'success_action_status':'201',
+        'acl':'public-read',
+        'policy':'eyJle...J9XX0=',
+        'x-amz-credential':'AKIAIOPMWGGVZVRNYUPA/20170315/us-east-1/s3/aws4_request',
+        'x-amz-algorithm':'AWS4-HMAC-SHA256',
+        'x-amz-date':'20170315T113857Z',
+        'x-amz-signature':'40453f4004f9b749a2d7266c757908ccac82923aedb606388bad6b83312a5bc0'}"
+    data-url="https://finalblog-dev.s3.amazonaws.com"
+    data-host="finalblog-dev.s3.amazonaws.com"
+    id="new_photo"
+    enctype="multipart/form-data"
+    action="/users/5/photos"
+    accept-charset="UTF-8"
+    method="post">
+    <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="2cO5p...hOmbg==">
+
+    <div id="user-data">
+
+        <!-- ======= which photo ======= -->
+        <div class="data">
+            <div class="data-label"><label for="photo_image">Image</label></div>
+            <div class="data-value"><input autofocus="autofocus" class="file-field" type="file" name="photo[image]" id="photo_image"></div>
+        </div>
+
+        <!-- ======= photo properties ======= -->
+        <div class="data">
+            <div class="data-label"><label for="title_Title">Title</label></div>
+            <div class="data-value"><input autofocus="autofocus" type="text" name="photo[title]" id="photo_title"></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><label for="caption_Caption">Caption</label></div>
+            <div class="data-value"><input autofocus="autofocus" type="text" name="photo[caption]" id="photo_caption"></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><label for="photo_content_type">Image Type</label></div>
+            <div class="data-value">
+                <select name="content_type" id="content_type">
+                    <option selected="selected" value="1">image/jpeg</option>
+                    <option value="2">image/png</option>
+                    <option value="3">image/gif</option>
+                </select>
+            </div>
+        </div>
+        <div class="data">
+            <div class="data-label"><label for="date_taken_Date Taken">Date taken</label></div>
+            <div class="data-value"><input autofocus="autofocus" type="text" name="photo[date_taken]" id="photo_date_taken"></div>
+        </div>
+
+        <!-- ======= submit ======= -->
+        <div class="data">
+            <input type="submit" name="commit" value="Save Photo" class="photo-button" data-disable-with="Save Photo">
+        </div>
+    </div>
+</form>

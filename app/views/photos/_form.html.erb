@@ -1,0 +1,118 @@
+<!-- ======= photos/_form.html.erb ======= -->
+<!-- image, user_id, title, caption, content_type, date_taken -->
+<%= form_for([current_user, @photo], html: {
+        class: "upload",
+        data: {
+            'form-data' => (@s3_direct_post.fields),
+            'url' => @s3_direct_post.url,
+            'host' => URI.parse(@s3_direct_post.url).host
+        }
+    }) do |f| %>
+
+    <div id="user-data">
+
+        <!-- ======= which photo ======= -->
+        <div class="data">
+            <div class="data-label"><%= f.label :image %></div>
+            <div class="data-value"><%= f.file_field :image, autofocus: true, class:'file-field', id:'photo-file' %></div>
+        </div>
+
+        <!-- ======= photo properties ======= -->
+        <div class="data">
+            <div class="data-label"><%= label(:title, "Title") %></div>
+            <div class="data-value"><%= f.text_field :title, autofocus: true %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= label(:caption, "Caption") %></div>
+            <div class="data-value"><%= f.text_field :caption, autofocus: true %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= f.label(:content_type, "Image Type") %></div>
+            <div class="data-value">
+                <%= select_tag(:content_type, options_for_select(
+                    [['image/jpeg', 1], ['image/png', 2], ['image/gif', 3]], 1)
+                ) %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= label(:date_taken, "Date Taken") %></div>
+            <div class="data-value"><%= f.text_field :date_taken, autofocus: true  %></div>
+        </div>
+
+        <!-- ======= submit ======= -->
+        <div class="data">
+            <div class="data-label">&nbsp;</div>
+            <div class="data-value">
+                <%= f.submit value="Save Photo" %>
+                <!-- <button id="photo-button" type="button" name="button">Save Photo</button> -->
+            </div>
+        </div>
+
+    </div>
+
+<% end %>
+
+<script type="text/javascript">
+
+    $(function() {
+        console.log("======= init:fileUpload/form =======");
+        console.log("$('.upload'): ", $('.upload'));
+
+        // var form = $('#new_photo');
+        // var fileInput = $('#photo-file');
+        // console.log("form: ", form);
+        // console.log("fileInput: ", fileInput);
+        //
+        // // Initialize the jQuery File Upload plugin
+        // $('.upload').fileupload({
+        //     add: function (e, data) {
+        //         console.log("======= add =======");
+        //         var self = this;
+        //         $("#photo-button").off('click').on('click', function () {
+        //             console.log("======= click =======");
+        //             e.preventDefault();
+        //             console.log("this: ", this);
+        //             console.log("self: ", self);
+        //             console.log("form.data('url'): ", form.data('url'));
+        //             console.log("form.data('form-data'): ", form.data('form-data'));
+        //             form.submit();
+        //         });
+        //     },
+        //     fileInput: fileInput,
+        //     url: form.data('url'),
+        //     type: 'POST',
+        //     autoUpload: true,
+        //     formData: form.data('form-data'),
+        //     paramName: 'file',   // S3 does not like nested name fields i.e. name="user[avatar_url]"
+        //     dataType: 'XML',     // S3 returns XML if success_action_status is set to 201
+        //     replaceFileInput: false
+        // });
+
+        $('.upload').find("input:file").each(function(i, elem) {
+            console.log("======= input:file =======");
+            var fileInput    = $(elem);
+            var form         = $(fileInput.parents('form:first'));
+            var submitButton = form.find('input[type="submit"]');
+            var progressBar  = $("<div class='bar'></div>");
+            var barContainer = $("<div class='progress'></div>").append(progressBar);
+            console.log("form: ", form);
+            fileInput.after(barContainer);
+            fileInput.fileupload({
+                fileInput:       fileInput,
+                url:             form.data('url'),
+                type:            'POST',
+                autoUpload:       true,
+                formData:         form.data('form-data'),
+                paramName:        'file',   // S3 does not like nested name fields i.e. name="user[avatar_url]"
+                dataType:         'XML',    // S3 returns XML if success_action_status is set to 201
+                replaceFileInput: false
+            });
+        });
+    });
+
+</script>
+
+
+
+
+
+<br>

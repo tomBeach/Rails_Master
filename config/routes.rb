@@ -5,9 +5,10 @@ Rails.application.routes.draw do
 
     get "/" => "users#home"
     get "/home" => "users#home"
-    
+
     resources :users do
         resources :posts
+        resources :photos
     end
     resources :comments
 

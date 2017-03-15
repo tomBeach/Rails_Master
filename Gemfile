@@ -30,6 +30,12 @@ gem 'devise'
 # switch to postgres per heroku instructions
 gem 'pg'
 
+# gems for photo uploads/storage
+# gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
+gem 'paperclip', '~> 5'
+gem 'aws-sdk', '~> 2'
+gem 'fog'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

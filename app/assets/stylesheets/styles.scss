@@ -6,7 +6,7 @@ html, body {
 }
 body {
     font-family: "Ariel", sans-serif;
-    border: 2px solid cadetblue;
+    // border: 2px solid cadetblue;
 }
 
 /* ======= ======= =======  sections  ======= ======= ======= */
@@ -32,10 +32,38 @@ body {
 #yield {
     min-height: 300px;
     background-color: #fff;
-    border: 2px solid darkorange;
+    // border: 2px solid darkorange;
 }
 #footer {
     background-color: #ddd;
+}
+
+/* ======= ======= =======  section details  ======= ======= ======= */
+#menuBox {
+    margin: 0;
+    height: 60px;
+    padding: 0;
+    background-color: #eee;
+}
+#infoText {
+    margin: 20px 0;
+}
+.spacer {
+    display: inline-block;
+    width: 20px;
+}
+
+/* ======= ======= =======  progress bar  ======= ======= ======= */
+.progress {
+    max-width: 600px;
+    margin:    0.2em 0 0.2em 0;
+}
+
+.progress .bar {
+    height:  1.2em;
+    padding-left: 0.2em;
+    color:   white;
+    display: none;
 }
 
 /* ======= ======= =======  states  ======= ======= ======= */
@@ -109,6 +137,7 @@ input[type="button"], input[type="submit"] {
 }
 .data-label {
     width: 160px;
+    text-align: right;
     font-size: 16px;
 }
 .data-value {
@@ -123,13 +152,40 @@ input[type="button"], input[type="submit"] {
 #post_content {
     font-size: 16px;
 }
+#content_type {
+    width: 180px;
+    height: 30px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+input[type="submit"] {
+    width: 180px;
+    height: 30px;
+    margin: 10px 0;
+    font-size: 16px;
+    background-color: #eee;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+#photo-button {
+    width: 180px;
+    height: 30px;
+    margin: 10px 0;
+    font-size: 16px;
+    background-color: #eee;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: thistle;
+}
 
 /* ======= ======= =======  posts  ======= ======= ======= */
 .user-box {
     width: 80%;
     height: auto;
+    margin: 30px;
     min-height: 60px;
     border: 1px solid #eee;
+    box-shadow: 4px 4px 5px #b9a;
 }
 .title-box {
     width: 100%;
@@ -181,7 +237,10 @@ input[type="button"], input[type="submit"] {
     margin: 0;
     font-size: 12px;
 }
-
+.tag-group {
+    margin: 10px;
+    color: orange;
+}
 /* ======= ======= =======  posts  ======= ======= ======= */
 .id-box {
     float: left;

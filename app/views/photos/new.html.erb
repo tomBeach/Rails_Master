@@ -1,0 +1,6 @@
+<!-- ======= photos/new.html.erb ======= -->
+<h1>Upload Photo</h1>
+
+<%= render 'form', photo: @photo %>
+
+<%= link_to "Back", request.referer.present? ? request.referer : "/home" %>

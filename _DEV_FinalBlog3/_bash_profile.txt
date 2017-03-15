@@ -1,0 +1,28 @@
+export PATH="/usr/local/bin:$PATH"
+export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/9.4/bin
+export PATH=$PATH:/Applications/MAMP/Library/bin
+export EDITOR='emacs'
+export BUNDLER_EDITOR='emacs'
+
+export SECRET_KEY_BASE='19233dbecc74b50a746ece016cd9ab4c6e5d7ce5e46f7fa41a6145f1102d66622c9bedb4b31620063c04321784854e00f4641f0f5bbb287f2a36fa388e1ca26c'
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
+# source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+# GIT_PS1_SHOWDIRTYSTATE=1 # display the unstaged (*) and staged (+) indicators
+PS1='\W\$ '
+
+alias chrome='open -a "Google Chrome.app"'
+
+alias served="ruby -run -e httpd . -p 5000"
+
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+// ======= ======= ======= possible .bash_profile env variables [heroku set]======= ======= =======
+$ heroku config:add SENDGRID_USERNAME='example'
+$ heroku config:add SENDGRID_PASSWORD='secret'
+$ heroku config:add MAILCHIMP_API_KEY='my-key'
+$ heroku config:add MAILCHIMP_LIST_ID='mylistid'
+$ heroku config:add OWNER_EMAIL='me@example.com'

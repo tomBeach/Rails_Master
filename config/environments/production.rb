@@ -1,7 +1,18 @@
 Rails.application.configure do
-  # Settings specified here will take precedence over those in config/application.rb.
+    # Settings specified here will take precedence over those in config/application.rb.
 
-  config.secret_key_base = ENV["SECRET_KEY_BASE"]
+    # settings for AWS and heroku
+    config.serve_static_assets = true
+    config.secret_key_base = ENV["SECRET_KEY_BASE"]
+    config.paperclip_defaults = {
+        :storage => :s3,
+        :s3_region => ENV['S3_REGION'],
+        :s3_credentials => {
+            :bucket => ENV['S3_BUCKET'],
+            :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
+            :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+        }
+    }
 
   # Code is not reloaded between requests.
   config.cache_classes = true
@@ -13,7 +24,7 @@ Rails.application.configure do
   config.eager_load = true
 
   # Full error reports are disabled and caching is turned on.
-  config.consider_all_requests_local       = false
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = true
 
   # Disable serving static files from the `/public` folder by default since

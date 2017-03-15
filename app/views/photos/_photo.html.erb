@@ -1,0 +1,12 @@
+<!-- ======= photos/_photo.html.erb ======= -->
+<div class="photo-box">
+    <h2><%= photo.title %></h2>
+
+    <%= link_to image_tag photo.image.url(:thumb) %>
+    <%= link_to image_tag(photo.image.url), user_photo_path(current_user, photo) %>
+    <div class="photo-info">
+        <p><%= link_to 'Edit Photo', edit_user_photo_path(current_user, photo) %></p>
+        <p><%= link_to 'Delete Photo', user_photo_path(current_user, photo), method: :delete %></p>
+    </div>
+
+</div>

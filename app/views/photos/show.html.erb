@@ -1,0 +1,13 @@
+<!-- ======= show.html.erb ======= -->
+<div class="photo-detail">
+    <h2><%= @photo.title %></h2>
+
+    <%= image_tag(@photo.image.url) %>
+    <div class="photo-info">
+        <p><%= link_to 'Edit Photo', edit_user_photo_path(@photo) %></p>
+        <p><%= link_to 'Delete Photo', user_photo_path(@photo), method: :delete %></p>
+    </div>
+
+</div>
+
+<%= link_to "Back", request.referer.present? ? request.referer : "/home" %>
