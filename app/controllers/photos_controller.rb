@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
 
     def index
         puts"\n******* index *******"
-        @photos = Photo.order('created_at')
+        @photos = Photo.order(created_at: :desc)
     end
 
     def show
