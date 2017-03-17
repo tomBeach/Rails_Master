@@ -20,6 +20,12 @@ class UsersController < ApplicationController
         end
     end
 
+    # ======= GET /toggle_tag =======
+    def toggle_tag
+        puts "******* toggle_tag *******"
+        render json: { "tag": "tag"}
+    end
+
     # ======= GET /index =======
     def index
         puts "******* index *******"

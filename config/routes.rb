@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
     get "/" => "users#home"
     get "/home" => "users#home"
+    get "/toggle_tag" => "users#toggle_tag"
 
     resources :users do
         resources :posts

@@ -10,6 +10,7 @@
     </div>
 
 <% else %>
+    <% puts " ** current_user.inspect: #{current_user.inspect}" %>
 
     <% @users.each_with_index do |user, index| %>
         <% user_post = @postsArray[index].first %>
@@ -21,22 +22,31 @@
             <!-- ======= ======= tags ======= ======= -->
             <% if user_post != "n" %>
                 <% post_tags = user_post.tags %>
-                <% if post_tags %>
-                    <% puts " ** post_tags.inspect: #{post_tags.inspect}" %>
+                <% puts " ** post_tags.inspect: #{post_tags.inspect}" %>
+                <% puts " ** post_tags.length: #{post_tags.length}" %>
+                <% if post_tags.length > 0 %>
                     <p class="tag-group">
 
                         <% post_tags.each_with_index do |tag, index| %>
                             <% if index < post_tags.length - 1 %>
-                                <%= tag.tag_name %> |
+                                <% if current_user %>
+                                    <%= link_to tag.tag_name, "/toggle_tag?user=#{current_user.id}&tag=#{tag.id}" %> |
+                                <% else %>
+                                    <%= tag.tag_name %> |
+                                <% end %>
                             <% else %>
-                                <%= tag.tag_name %>
+                                <% if current_user %>
+                                    <%= link_to tag.tag_name, "/toggle_tag?user=#{current_user.id}&tag=#{tag.id}" %>
+                                <% else %>
+                                    <%= tag.tag_name %>
+                                <% end %>
                             <% end %>
                         <% end %>
 
                     </p>
                 <% else %>
                     <% puts " ** NO TAGS ** " %>
-                    <p class="empty-text">no tags for this post</p>
+                    <p class="tag-group">no tags for this post</p>
                 <% end %>
             <% end %>
 
@@ -69,3 +79,8 @@
     <%= link_to "Back", request.referer.present? ? request.referer : "/home" %>
 
 <% end %>
+
+<script>
+$('.')
+
+</script>

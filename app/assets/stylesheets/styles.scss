@@ -66,6 +66,37 @@ body {
     display: none;
 }
 
+/* ======= ======= =======  photos  ======= ======= ======= */
+.photo-box, .photo-detail {
+    clear: both;
+    max-width: 60%;
+    height: 420px;
+    margin: 20px;
+    padding: 20px;
+    overflow: hidden;
+    border: 2px solid cadetblue;
+}
+.photo-detail {
+    height: auto;
+}
+.photo-box > .thumb {
+    width: 100px;
+    height: auto;
+    margin: 10px;
+}
+.photo-box > a > .full {
+    float: left;
+    width: auto;
+    height: 400px;
+    margin: 10px;
+}
+.photo-box > h2 {
+    margin: 0;
+}
+.photo-info {
+    padding: 20px;
+}
+
 /* ======= ======= =======  states  ======= ======= ======= */
 .pipe {
     font-size: 42px;
@@ -100,14 +131,6 @@ body {
 }
 
 /* ======= ======= =======  signin-signup  ======= ======= ======= */
-#signin-signup {
-    width: 40%;
-    padding: 10px;
-    background-color: thistle;
-}
-.signin-group {
-    margin: 15px;
-}
 input {
     margin-right: 20px;
     font-size: 18px;

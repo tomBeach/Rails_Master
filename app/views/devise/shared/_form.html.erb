@@ -1,0 +1,32 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div id="user-data">
+        <div class="data"><div class="data-label"><%= label(:fname, "firstname") %></div>
+            <div class="data-value"><%= f.text_field :fname, autofocus: true %></div></div>
+        <div class="data"><div class="data-label"><%= label(:lname, "lastname") %></div>
+            <div class="data-value"><%= f.text_field :lname, autofocus: true %></div></div>
+        <div class="data"><div class="data-label"><%= label(:email, "email") %></div>
+            <div class="data-value"><%= f.text_field :email, autofocus: true %></div></div>
+        <div class="data"><div class="data-label"><%= label(:username, "username") %></div>
+            <div class="data-value"><%= f.text_field :username, autofocus: true %></div></div>
+        <div class="data"><div class="data-label"><%= label(:password, "password") %></div>
+            <div class="data-value"><%= f.password_field :password, autocomplete: "off" %>
+                <% if @minimum_password_length %>
+                    <span>(<%= @minimum_password_length %> characters minimum)</span>
+                <% end %>
+            </div>
+        </div>
+        <div class="data"><div class="data-label"><%= label(:password_confirmation, "password confirm") %></div>
+            <div class="data-value"><%= f.text_field :password_confirmation, autocomplete: "off", autofocus: true %></div></div>
+        <div class="data"><div class="data-label">&nbsp;</div>
+            <div class="data-value">
+                <% if !current_user %>
+                    <%= f.submit "Sign up" %>
+                <% else %>
+                    <%= f.submit "Save" %>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<% end %>
