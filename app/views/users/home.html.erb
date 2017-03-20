@@ -10,44 +10,64 @@
     </div>
 
 <% else %>
-    <% puts " ** current_user.inspect: #{current_user.inspect}" %>
+    <% puts " ** current_user: #{current_user.inspect}" %>
 
+    <!-- ======= ======= users loop ======= ======= -->
     <% @users.each_with_index do |user, index| %>
-        <% user_post = @postsArray[index].first %>
-        <% puts " ** user_post.inspect: #{user_post.inspect}" %>
+        <% user_post = @posts_array[index] %>
+        <% user_post_id = user_post[:id] %>
+        <% tags_array = @post_tags_array[index] %>
+        <!-- <% puts "\n\n ** user_post: #{user_post.inspect}" %> -->
 
         <!-- ======= ======= user ======= ======= -->
         <div class="user-box">
 
-            <!-- ======= ======= tags ======= ======= -->
-            <% if user_post != "n" %>
-                <% post_tags = user_post.tags %>
-                <% puts " ** post_tags.inspect: #{post_tags.inspect}" %>
-                <% puts " ** post_tags.length: #{post_tags.length}" %>
-                <% if post_tags.length > 0 %>
-                    <p class="tag-group">
+            <!-- ======= ======= first post ======= ======= -->
+            <% if user_post != "no_post" %>
+                <!-- <% puts " ** tags_array[0].length: #{tags_array[0].length}" %>
+                <% puts " ** tags_array[1].length: #{tags_array[1].length}" %> -->
 
-                        <% post_tags.each_with_index do |tag, index| %>
-                            <% if index < post_tags.length - 1 %>
-                                <% if current_user %>
-                                    <%= link_to tag.tag_name, "/toggle_tag?user=#{current_user.id}&tag=#{tag.id}" %> |
+                <!-- ======= ======= tags ======= ======= -->
+                <% if tags_array[0].length > 0 %>
+                    <p class="tag-group">
+                        <% tags_array[0].each_with_index do |tag, index| %>
+                            <% puts " ** tag: #{tag.inspect}" %>
+                            <% tag_id = "#{user_post.id}_#{tag.id}"  %>
+
+                            <!-- ======= ======= editable tags (current_user) ======= ======= -->
+                            <% if current_user %>
+                                <% if index < tags_array[0].length - 1 %>
+                                    <%= link_to tag.tag_name, "#", {id: tag_id, class: "tag"} %> |
                                 <% else %>
-                                    <%= tag.tag_name %> |
+                                    <%= link_to tag.tag_name, "#", {id: tag_id, class: "tag"} %>
                                 <% end %>
+
+                            <!-- ======= ======= display tags only ======= ======= -->
                             <% else %>
-                                <% if current_user %>
-                                    <%= link_to tag.tag_name, "/toggle_tag?user=#{current_user.id}&tag=#{tag.id}" %>
+                                <% if index < tags_array[0].length - 1 %>
+                                    <%= tag.tag_name %> |
                                 <% else %>
                                     <%= tag.tag_name %>
                                 <% end %>
                             <% end %>
-                        <% end %>
 
-                    </p>
+                        <% end %>
                 <% else %>
                     <% puts " ** NO TAGS ** " %>
-                    <p class="tag-group">no tags for this post</p>
+                    <p class="tag-group">no tags for this post
                 <% end %>
+
+                    <!-- ======= ======= tag select/create ======= ======= -->
+                    <% tag_name_ids = [] %>
+                    <% tags_array[1].each do |tag| %>
+                        <% tag_name_ids << [tag.tag_name, tag.id] %>
+                    <% end %>
+
+                    <%= button_tag("add tag", { id: "add-tag_#{user_post_id}", class: "tag-select add-tag"  }) %>
+                    <%= text_field_tag("new_tag", value = "create new tag", { class: "tag-select" }) %>
+                    <%= select_tag("add_tag", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
+                </p>
+
             <% end %>
 
             <div class="title-box">
@@ -60,9 +80,6 @@
                     <% else %>
                         <p class="empty-text">no posts for this user</p>
                     <% end %>
-                </div>
-                <div class="user-links">
-                    <%= link_to "profile", user_path(user) %>
                 </div>
             </div>
 
@@ -81,6 +98,65 @@
 <% end %>
 
 <script>
-$('.')
+
+    $('.add-tag').on('click', function(e) {
+        console.log("======= add-tag =======");
+        e.preventDefault();
+        e.stopPropagation();
+        var postTag = e.currentTarget.id.split("_");
+        var newTag = $('#' + e.currentTarget.id).siblings('input').val();
+        var tag_id = $('#' + e.currentTarget.id).siblings('select').val();
+        console.log("newTag: ", newTag);
+        console.log("tag_id: ", tag_id);
+
+        if (newTag == "create new tag") {
+            newTag = "ng";
+        }
+        if (tag_id == null) {
+            tag_id = "ng";
+        }
+
+        $.ajax({
+            url: "add_new_tag",
+            data: { post_id: postTag[1], tag_id: tag_id, new_tag: newTag },
+            method: "GET",
+            dataType: "json"
+        }).success(function(jsonData){
+            console.log("*** ajax success ***");
+            console.dir(jsonData);
+            updateTags(jsonData);
+        }).error(function(){
+            console.log("*** ajax error ***");
+            // handleAjaxError(jsonData);
+        });
+    });
+
+    $('.tag').on('click', function(e) {
+        console.log("======= toggleTag =======");
+        var postTag = e.currentTarget.id.split("_");
+        console.log("post_id: ", postTag[0]);
+        console.log("tag_id: ", postTag[1]);
+        e.preventDefault();
+        e.stopPropagation();
+
+        $.ajax({
+            url: "toggle_tag",
+            data: { post_id: postTag[0], tag_id: postTag[1] },
+            method: "GET",
+            dataType: "json"
+        }).success(function(jsonData){
+            console.log("*** ajax success ***");
+            console.dir(jsonData);
+            updateTags(jsonData);
+        }).error(function(){
+            console.log("*** ajax error ***");
+            // handleAjaxError(jsonData);
+        });
+    });
+
+    function updateTags(jsonData) {
+        console.log("======= updateTags =======");
+        var tags = $('#')
+    }
 
 </script>

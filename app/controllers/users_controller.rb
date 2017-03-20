@@ -5,25 +5,76 @@ class UsersController < ApplicationController
     # ======= GET /users =======
     def home
         puts "/n******* home *******"
-        puts " ** current_user.inspect: #{current_user.inspect}"
+        puts " ** current_user: #{current_user.inspect}"
 
-        @postsArray = []
-        @tags = Tag.all
         @users = User.all
+        @posts_array = []
+        @post_tags_array = []
+
         @users.each do |user|
             posts = user.posts
+
+            # == user has at least one post
             if posts.length > 0
-                @postsArray << posts
+                @posts_array << posts[0]
+                @post_tags = posts[0].tags
+
+                # == get assigned/not assigned tags
+                if @post_tags.length > 0
+                    @post_tag_ids = @post_tags.map{|pt| pt.id }
+                    @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
+                else
+                    @post_no_tags = Tag.all
+                end
+                @post_tags_array << [@post_tags, @post_no_tags]
+
+            # == no posts (create placeholders)
             else
-                @postsArray << "no_post"
+                @posts_array << "no_post"
+                @post_tags_array << [[], []]
             end
         end
+    end
+
+    # ======= GET /add_new_tag =======
+    def add_new_tag
+        puts "******* add_new_tag *******"
+        puts " ** params.inspect: #{params.inspect}"
+
+        # == create brand new tag; add to Tags
+        if params[:new_tag] != "ng"
+            check_tag = Tag.where(tag_name: params[:new_tag])
+            puts " ** check_tag.inspect: #{check_tag.inspect}"
+            if check_tag.length == 0
+                @tag = Tag.create(tag_name: params[:new_tag], tag_rank: 0)
+            end
+            @post_tag = PostTag.create(post_id: params[:post_id], tag_id: @tag[:id])
+            puts " ** @post_tag.inspect: #{@post_tag.inspect}"
+        end
+
+        # == assign existing tag
+        if params[:tag_id] != ""
+            @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
+            puts " ** @post_tag.inspect: #{@post_tag.inspect}"
+        end
+        render json: { "new_tag": params[:new_tag], "add_tag": params[:add_tag] }
     end
 
     # ======= GET /toggle_tag =======
     def toggle_tag
         puts "******* toggle_tag *******"
-        render json: { "tag": "tag"}
+        puts " ** params.inspect: #{params.inspect}"
+        @post_tag = PostTag.where(post_id: params[:post_id], tag_id: params[:tag_id]).first
+        if @post_tag
+            puts "******* HAS TAG (delete tag) *******"
+            puts " ** @post_tag: #{@post_tag.inspect}"
+            puts " ** @post_tag.id: #{@post_tag.id.inspect}"
+            PostTag.destroy(@post_tag.id.to_i)
+            render json: { "tag": false, "post_id": params[:post_id], "tag_id": params[:tag_id] }
+        else
+            puts "******* NO TAG (make new) *******"
+            render json: { "tag": true, "post_id": params[:post_id], "tag_id": params[:tag_id] }
+        end
     end
 
     # ======= GET /index =======

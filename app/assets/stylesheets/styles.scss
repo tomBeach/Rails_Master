@@ -14,17 +14,8 @@ body {
     margin: 20px;
     padding: 10px;
 }
-#menu {
-    margin: 0 20px 20px 20px;
-    padding: 10px;
-    background-color: #eee;
-}
-.subhead {
-    margin: 5px 10px;
-    color: purple;
-}
 #header {
-    height: 100px;
+    height: auto;
     margin: 20px 20px 0 20px;
     padding: 10px;
     background-color: #eee;
@@ -41,9 +32,20 @@ body {
 /* ======= ======= =======  section details  ======= ======= ======= */
 #menuBox {
     margin: 0;
-    height: 60px;
-    padding: 0;
+    padding: 10px;
     background-color: #eee;
+}
+#menuBox > a {
+    font-size: 18px;
+    color: darksalmon;
+    text-decoration: none;
+}
+#menuBox > a:hover {
+    color: red;
+}
+.subhead {
+    margin: 5px 10px;
+    color: purple;
 }
 #infoText {
     margin: 20px 0;
@@ -225,7 +227,7 @@ input[type="submit"] {
 }
 .post-title {
     float: left;
-    width: 60%;
+    width: 50%;
     margin: 2px 10px;
     font-size: 20px;
     color: purple;
@@ -260,9 +262,20 @@ input[type="submit"] {
     margin: 0;
     font-size: 12px;
 }
+.tag {
+    color: orange;
+    font-size: 14px;
+    text-decoration: none;
+}
 .tag-group {
     margin: 10px;
     color: orange;
+}
+.tag-select {
+    float: right;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 14px;
 }
 /* ======= ======= =======  posts  ======= ======= ======= */
 .id-box {
