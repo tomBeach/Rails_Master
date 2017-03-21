@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get "/stoxx" => "users#stoxx"
 
     # == json routes
+    # get "/toggle_tag" => "users#toggle_tag"
     get "/toggle_tag" => "users#toggle_tag"
     get "/add_new_tag" => "users#add_new_tag"
 

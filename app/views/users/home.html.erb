@@ -21,6 +21,7 @@
 
         <!-- ======= ======= user ======= ======= -->
         <div class="user-box">
+            <div class="tag-box">
 
             <!-- ======= ======= first post ======= ======= -->
             <% if user_post != "no_post" %>
@@ -29,7 +30,7 @@
 
                 <!-- ======= ======= tags ======= ======= -->
                 <% if tags_array[0].length > 0 %>
-                    <p class="tag-group">
+                    <p id="tag-group_<%= user_post.id %>" class="tag-group">
                         <% tags_array[0].each_with_index do |tag, index| %>
                             <% puts " ** tag: #{tag.inspect}" %>
                             <% tag_id = "#{user_post.id}_#{tag.id}"  %>
@@ -57,7 +58,8 @@
                     <p class="tag-group">no tags for this post
                 <% end %>
 
-                    <!-- ======= ======= tag select/create ======= ======= -->
+                <!-- ======= ======= tag select/create ======= ======= -->
+                <p id="input-group_<%= user_post.id %>" class="input-group">
                     <% tag_name_ids = [] %>
                     <% tags_array[1].each do |tag| %>
                         <% tag_name_ids << [tag.tag_name, tag.id] %>
@@ -67,6 +69,7 @@
                     <%= text_field_tag("new_tag", value = "create new tag", { class: "tag-select" }) %>
                     <%= select_tag("add_tag", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
                 </p>
+            </div>
 
             <% end %>
 
@@ -99,6 +102,7 @@
 
 <script type="text/javascript">
 
+    // ======= new or add tag =======
     $('.add-tag').on('click', function(e) {
         console.log("== add-tag ==");
         e.preventDefault();
@@ -129,13 +133,14 @@
         });
     });
 
+    // ======= toggle current tag =======
     $('.tag').on('click', function(e) {
         console.log("== toggleTag ==");
         var postTag = e.currentTarget.id.split("_");
-        console.log("post_id: ", postTag[0]);
-        console.log("tag_id: ", postTag[1]);
         e.preventDefault();
         e.stopPropagation();
+        console.log("postTag[0]:", postTag[0]);
+        console.log("postTag[1]:", postTag[1]);
 
         $.ajax({
             url: "toggle_tag",
@@ -144,17 +149,28 @@
             dataType: "json"
         }).success(function(jsonData){
             console.log("*** ajax success ***");
-            console.dir(jsonData);
             updateTags(jsonData);
         }).error(function(){
             console.log("*** ajax error ***");
-            // handleAjaxError(jsonData);
         });
     });
 
     function updateTags(jsonData) {
         console.log("== updateTags ==");
-        var tags = $('#')
+        var post_id = jsonData.post_id;
+        $('#tag-group_' + post_id).html("");
+        var tagText = "";
+
+        $.each(jsonData.tags, function(index, tag) {
+            console.log("tag: ", tag);
+            if (index < jsonData.tags.length - 1) {
+                tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a> | ";
+            } else {
+                tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a>";
+            }
+        })
+        console.log("tagText: ", tagText);
+        $('#tag-group_' + post_id).html(tagText);
     }
 
 </script>

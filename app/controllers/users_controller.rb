@@ -17,31 +17,8 @@ class UsersController < ApplicationController
         remote_url += "&type=daily&startDate=" + startDate + "&endDate=" + endDate
 
         json_data = HTTParty.get(remote_url)
-        # puts " ** json_data['results']: #{json_data['results'].inspect}"
         puts " ** json_data['results'].length: #{json_data['results'].length.inspect}"
         @stock_data = json_data['results']
-        # puts " ** json_data: #{json_data.inspect}"
-        # puts " ** json_data['status']: #{json_data['status'].inspect}"
-
-        # data = JSON.parse(json_data)
-        # puts " ** data['status']: #{data['status'].inspect}"
-
-
-        # residents = data['Resident'].map { |rd| Resident.new(rd['phone'], rd['addr']) }
-
-
-        # body = JSON.parse(response.body)
-        # puts " ** body: #{body.inspect}"
-        # puts " ** response.message: #{response.message.inspect}"
-        # puts " ** response.headers: #{response.headers.inspect}"
-        # puts " ** response.body: #{response.body.inspect}"
-
-        # puts " ** @response: #{@response.inspect}"
-        # puts " ** @response.length: #{@response.length.inspect}"
-
-        # res = HTTP.get(remote_url).to_s
-        # stock_data = res.results
-        # puts " ** stock_data: #{stock_data.inspect}"
 
     end
 
@@ -82,41 +59,49 @@ class UsersController < ApplicationController
     # ======= GET /add_new_tag =======
     def add_new_tag
         puts "******* add_new_tag *******"
-        puts " ** params.inspect: #{params.inspect}"
+        puts " ** params: #{params.inspect}"
 
         # == create brand new tag; add to Tags
         if params[:new_tag] != "ng"
             check_tag = Tag.where(tag_name: params[:new_tag])
-            puts " ** check_tag.inspect: #{check_tag.inspect}"
+            puts " ** check_tag: #{check_tag.inspect}"
+            puts " ** check_tag.length: #{check_tag.length.inspect}"
+            puts " ** check_tag.first: #{check_tag.first.inspect}"
+            puts " ** check_tag.first[:id]: #{check_tag.first[:id].inspect}"
             if check_tag.length == 0
                 @tag = Tag.create(tag_name: params[:new_tag], tag_rank: 0)
+                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: @tag[:id])
+            else
+                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: check_tag.first[:id])
             end
-            @post_tag = PostTag.create(post_id: params[:post_id], tag_id: @tag[:id])
-            puts " ** @post_tag.inspect: #{@post_tag.inspect}"
         end
 
         # == assign existing tag
         if params[:tag_id] != ""
             @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
-            puts " ** @post_tag.inspect: #{@post_tag.inspect}"
         end
-        render json: { "new_tag": params[:new_tag], "add_tag": params[:add_tag] }
+        @post_tags = PostTag.where(post_id: toggle_params[:post_id])
+        @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+        @tags = Tag.where(id: @post_tag_ids)
+        render json: { tags: @tags, post_id: params[:post_id]}
     end
 
     # ======= GET /toggle_tag =======
     def toggle_tag
-        puts "******* toggle_tag *******"
-        puts " ** params.inspect: #{params.inspect}"
-        @post_tag = PostTag.where(post_id: params[:post_id], tag_id: params[:tag_id]).first
+        puts "\n\n******* toggle_tag *******"
+        puts " ** toggle_params: #{toggle_params.inspect}"
+
+        # == check post for selected tag
+        @post_tag = PostTag.where(post_id: toggle_params[:post_id], tag_id: toggle_params[:tag_id]).first
+
+        # == remove previously assigned tag
         if @post_tag
             puts "******* HAS TAG (delete tag) *******"
-            puts " ** @post_tag: #{@post_tag.inspect}"
-            puts " ** @post_tag.id: #{@post_tag.id.inspect}"
             PostTag.destroy(@post_tag.id.to_i)
-            render json: { "tag": false, "post_id": params[:post_id], "tag_id": params[:tag_id] }
-        else
-            puts "******* NO TAG (make new) *******"
-            render json: { "tag": true, "post_id": params[:post_id], "tag_id": params[:tag_id] }
+            @post_tags = PostTag.where(post_id: toggle_params[:post_id])
+            @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+            @tags = Tag.where(id: @post_tag_ids)
+            render json: { tags: @tags, post_id: toggle_params[:post_id]}
         end
     end
 
@@ -221,7 +206,7 @@ class UsersController < ApplicationController
     # ======= geocode_address =======
     # def geocode_address
     #   self.latlon = Geocoder.new(request.ip)
-    #   puts " ** self.latlon.inspect: #{self.latlon.inspect}"
+    #   puts " ** self.latlon: #{self.latlon.inspect}"
     # end
 
     private
@@ -236,7 +221,11 @@ class UsersController < ApplicationController
           @user = User.find(params[:id])
         end
 
-        # Never trust parameters from the scary internet, only allow the white list through.
+        def toggle_params
+          puts "******* toggle_params *******"
+          params.permit(:post_id, :tag_id, :new_tag)
+        end
+
         def user_params
           puts "******* user_params *******"
           params.require(:user).permit(:fname, :lname, :email, :email_confirmation, :username, :password)
