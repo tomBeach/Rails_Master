@@ -5,6 +5,11 @@ Rails.application.routes.draw do
 
     get "/" => "users#home"
     get "/home" => "users#home"
+
+    # == specialty routes
+    get "/stoxx" => "users#stoxx"
+
+    # == json routes
     get "/toggle_tag" => "users#toggle_tag"
     get "/add_new_tag" => "users#add_new_tag"
 

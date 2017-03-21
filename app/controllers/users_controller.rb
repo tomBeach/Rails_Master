@@ -2,6 +2,49 @@ class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
     # before_action :authenticate_user!
 
+    # ======= GET /stoxx =======
+    def stoxx
+        puts "/n******* stoxx *******"
+
+        # == data format: yyyymmdd[hhmm[ss]]
+        startDate = "20170121" + "000000"
+        endDate = "20170317" + "000000"
+        symbol = "IBM"
+        remote_key = Rails.application.config.bar_chart_key
+
+        remote_url = "https://marketdata.websol.barchart.com"
+        remote_url += "/getHistory.json?key=" + remote_key + "&symbol=" + symbol
+        remote_url += "&type=daily&startDate=" + startDate + "&endDate=" + endDate
+
+        json_data = HTTParty.get(remote_url)
+        # puts " ** json_data['results']: #{json_data['results'].inspect}"
+        puts " ** json_data['results'].length: #{json_data['results'].length.inspect}"
+        @stock_data = json_data['results']
+        # puts " ** json_data: #{json_data.inspect}"
+        # puts " ** json_data['status']: #{json_data['status'].inspect}"
+
+        # data = JSON.parse(json_data)
+        # puts " ** data['status']: #{data['status'].inspect}"
+
+
+        # residents = data['Resident'].map { |rd| Resident.new(rd['phone'], rd['addr']) }
+
+
+        # body = JSON.parse(response.body)
+        # puts " ** body: #{body.inspect}"
+        # puts " ** response.message: #{response.message.inspect}"
+        # puts " ** response.headers: #{response.headers.inspect}"
+        # puts " ** response.body: #{response.body.inspect}"
+
+        # puts " ** @response: #{@response.inspect}"
+        # puts " ** @response.length: #{@response.length.inspect}"
+
+        # res = HTTP.get(remote_url).to_s
+        # stock_data = res.results
+        # puts " ** stock_data: #{stock_data.inspect}"
+
+    end
+
     # ======= GET /users =======
     def home
         puts "/n******* home *******"

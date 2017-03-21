@@ -1,0 +1,59 @@
+<div class="content-margin">
+    <p>name: <%= current_user.username %> </p>
+    <p>stockData:</p>
+    <div>
+        <% puts " ** @stock_data.length: #{@stock_data.length.inspect}" %>
+
+        <% @stock_data.each do |data| %>
+            <% puts " ** data: #{data.inspect}" %>
+            <p><%= data %></p>
+        <% end %>
+
+    </div>
+
+    <input id="username" type="hidden" name="username" value="<%= current_user.username %>">
+</div>
+
+<script type="text/javascript">
+
+    // function getStockHistory() {
+    //     console.log("== getStockHistory ==");
+    //
+    //     var key = ENV['BC_KEY'];
+    //     var symbol = "IBM";
+    //     var startDate = "032017";
+    //     var remoteHost = "marketdata.websol.barchart.com";
+    //     var remotePath = "/getHistory.json?key=" + key + "&symbol=" + symbol + "&type=daily&startDate=" + startDate + "000000";
+    //     console.log("key: ", key);
+    //
+    //     $.ajax({
+    //         url: remoteHost + remotePath,
+    //         method: "GET",
+    //         dataType: "json"
+    //     }).success(function(jsonData){
+    //         console.log("*** ajax success ***");
+    //         console.dir(jsonData);
+    //         updateTags(jsonData);
+    //     }).error(function(){
+    //         console.log("*** ajax error ***");
+    //         // handleAjaxError(jsonData);
+    //     });
+    //
+    // }
+    // getStockHistory();
+    //
+    // // ======= convertDate =======
+    // function convertDate(d) {
+    //     // console.log('\n-- /convertDate');
+    //     if (d) {
+    //         var dateString = d.toString();
+    //         var parts = dateString.split(" ");
+    //         var months = {Jan: "01",Feb: "02",Mar: "03",Apr: "04",May: "05",Jun: "06",Jul: "07",Aug: "08",Sep: "09",Oct: "10",Nov: "11",Dec: "12"};
+    //         return parts[3]+months[parts[1]]+parts[2];
+    //     } else {
+    //         return null;
+    //     }
+    // }
+
+
+</script>

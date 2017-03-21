@@ -14,8 +14,7 @@
         <%= link_to 'All User Posts', "/home" %> |
         <%= link_to 'My Posts', user_posts_path(@user, @posts) %>
         <div class="spacer">&nbsp;</div>
-        <%= link_to 'State Machines', "/state_machines" %> |
-        <%= link_to 'Join Tables', "/join_tables" %>
+        <%= link_to 'Stoxx', "/stoxx" %>
         <p class="subhead">Welcome <strong><%= current_user.fname %></strong> !</p>
     <% else %>
         <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |

@@ -97,17 +97,15 @@
 
 <% end %>
 
-<script>
+<script type="text/javascript">
 
     $('.add-tag').on('click', function(e) {
-        console.log("======= add-tag =======");
+        console.log("== add-tag ==");
         e.preventDefault();
         e.stopPropagation();
         var postTag = e.currentTarget.id.split("_");
         var newTag = $('#' + e.currentTarget.id).siblings('input').val();
         var tag_id = $('#' + e.currentTarget.id).siblings('select').val();
-        console.log("newTag: ", newTag);
-        console.log("tag_id: ", tag_id);
 
         if (newTag == "create new tag") {
             newTag = "ng";
@@ -132,7 +130,7 @@
     });
 
     $('.tag').on('click', function(e) {
-        console.log("======= toggleTag =======");
+        console.log("== toggleTag ==");
         var postTag = e.currentTarget.id.split("_");
         console.log("post_id: ", postTag[0]);
         console.log("tag_id: ", postTag[1]);
@@ -155,7 +153,7 @@
     });
 
     function updateTags(jsonData) {
-        console.log("======= updateTags =======");
+        console.log("== updateTags ==");
         var tags = $('#')
     }
 

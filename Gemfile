@@ -34,7 +34,8 @@ gem 'pg'
 # gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 gem 'paperclip', '~> 5'
 gem 'aws-sdk', '~> 2'
-gem 'fog'
+gem 'http'
+gem 'httparty'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

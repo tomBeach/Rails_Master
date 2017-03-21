@@ -1,8 +1,10 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # settings for AWS and heroku
   config.serve_static_assets = true
+
+  # settings for AWS, heroku, BarchartOnDemand
+  config.bar_chart_key = ENV['BC_KEY']
   config.secret_key_base = ENV["SECRET_KEY_BASE"]
   config.paperclip_defaults = {
         :storage => :s3,
