@@ -11,6 +11,7 @@
 
 <% else %>
     <% puts " ** current_user: #{current_user.inspect}" %>
+    <div id="task-form" style="display:none;"></div>
 
     <!-- ======= ======= users loop ======= ======= -->
     <% @users.each_with_index do |user, index| %>
@@ -33,14 +34,14 @@
                     <p id="tag-group_<%= user_post.id %>" class="tag-group">
                         <% tags_array[0].each_with_index do |tag, index| %>
                             <% puts " ** tag: #{tag.inspect}" %>
-                            <% tag_id = "#{user_post.id}_#{tag.id}"  %>
+                            <% tag_ids = "#{user_post.id}_#{tag.id}"  %>
 
                             <!-- ======= ======= editable tags (current_user) ======= ======= -->
                             <% if current_user %>
                                 <% if index < tags_array[0].length - 1 %>
-                                    <%= link_to tag.tag_name, "#", {id: tag_id, class: "tag"} %> |
+                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
                                 <% else %>
-                                    <%= link_to tag.tag_name, "#", {id: tag_id, class: "tag"} %>
+                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
                                 <% end %>
 
                             <!-- ======= ======= display tags only ======= ======= -->
@@ -65,9 +66,9 @@
                         <% tag_name_ids << [tag.tag_name, tag.id] %>
                     <% end %>
 
-                    <%= button_tag("add tag", { id: "add-tag_#{user_post_id}", class: "tag-select add-tag"  }) %>
-                    <%= text_field_tag("new_tag", value = "create new tag", { class: "tag-select" }) %>
-                    <%= select_tag("add_tag", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
+                    <%= button_tag("add tag", { id: "add-tag-btn_#{user_post_id}", class: "tag-select add-tag-btn"  }) %>
+                    <%= text_field_tag("add-tag-text_#{user_post_id}", value = "new", { class: "tag-select" }) %>
+                    <%= select_tag("add-tag-sel_#{user_post_id}", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
                 </p>
             </div>
 
@@ -102,58 +103,68 @@
 
 <script type="text/javascript">
 
+    // add-tag-btn, add-tag-text, add-tag-sel
+
     // ======= new or add tag =======
-    $('.add-tag').on('click', function(e) {
+    $('.add-tag-btn').on('click', function(e) {
         console.log("== add-tag ==");
         e.preventDefault();
         e.stopPropagation();
+        // == post_id from postTag[1]
         var postTag = e.currentTarget.id.split("_");
+        // == user-created tag (text value)
         var newTag = $('#' + e.currentTarget.id).siblings('input').val();
-        var tag_id = $('#' + e.currentTarget.id).siblings('select').val();
+        // == user-selected tag (from existing tag select box)
+        var tagId = $('#' + e.currentTarget.id).siblings('select').val();
+        console.log("post_id/new/existing: ", postTag[1], newTag, tagId);
 
-        if (newTag == "create new tag") {
-            newTag = "ng";
+        if (tagId == "") {
+            tagId = "ng";
         }
-        if (tag_id == null) {
-            tag_id = "ng";
+        console.log("tagId: ", tagId);
+
+        if ((tagId == "ng") && (newTag == "new")) {
+            alert("add new tag or select existing tag");
+        } else {
+            // == postTag[1]: post_id, tag_id: existing tag (or ng/none selected), newTag: user-created tag
+            $.ajax({
+                url: "add_new_tag",
+                data: { post_id: postTag[1], tag_id: tagId, new_tag: newTag },
+                method: "GET",
+                dataType: "json"
+            }).success(function(jsonData){
+                console.log("*** ajax success ***");
+                console.dir(jsonData);
+                updateTags(jsonData);
+            }).error(function(){
+                console.log("*** ajax error ***");
+                // handleAjaxError(jsonData);
+            });
         }
 
-        $.ajax({
-            url: "add_new_tag",
-            data: { post_id: postTag[1], tag_id: tag_id, new_tag: newTag },
-            method: "GET",
-            dataType: "json"
-        }).success(function(jsonData){
-            console.log("*** ajax success ***");
-            console.dir(jsonData);
-            updateTags(jsonData);
-        }).error(function(){
-            console.log("*** ajax error ***");
-            // handleAjaxError(jsonData);
-        });
     });
 
     // ======= toggle current tag =======
-    $('.tag').on('click', function(e) {
-        console.log("== toggleTag ==");
-        var postTag = e.currentTarget.id.split("_");
-        e.preventDefault();
-        e.stopPropagation();
-        console.log("postTag[0]:", postTag[0]);
-        console.log("postTag[1]:", postTag[1]);
-
-        $.ajax({
-            url: "toggle_tag",
-            data: { post_id: postTag[0], tag_id: postTag[1] },
-            method: "GET",
-            dataType: "json"
-        }).success(function(jsonData){
-            console.log("*** ajax success ***");
-            updateTags(jsonData);
-        }).error(function(){
-            console.log("*** ajax error ***");
-        });
-    });
+    // $('.tag').on('click', function(e) {
+    //     console.log("== toggleTag ==");
+    //     var postTag = e.currentTarget.id.split("_");
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    //     console.log("postTag[0]:", postTag[0]);
+    //     console.log("postTag[1]:", postTag[1]);
+    //
+    //     $.ajax({
+    //         url: "toggle_tag",
+    //         data: { post_id: postTag[0], tag_id: postTag[1] },
+    //         method: "GET",
+    //         dataType: "json"
+    //     }).success(function(jsonData){
+    //         console.log("*** ajax success ***");
+    //         updateTags(jsonData);
+    //     }).error(function(){
+    //         console.log("*** ajax error ***");
+    //     });
+    // });
 
     function updateTags(jsonData) {
         console.log("== updateTags ==");

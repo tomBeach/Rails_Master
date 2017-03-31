@@ -62,7 +62,7 @@ class UsersController < ApplicationController
         puts " ** params: #{params.inspect}"
 
         # == create brand new tag; add to Tags
-        if params[:new_tag] != "ng"
+        if params[:new_tag] != "new"
             check_tag = Tag.where(tag_name: params[:new_tag])
             puts " ** check_tag: #{check_tag.inspect}"
             puts " ** check_tag.length: #{check_tag.length.inspect}"
@@ -74,34 +74,50 @@ class UsersController < ApplicationController
             else
                 @post_tag = PostTag.create(post_id: params[:post_id], tag_id: check_tag.first[:id])
             end
-        end
 
         # == assign existing tag
-        if params[:tag_id] != ""
-            @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
+        else
+            if params[:tag_id] != ""
+                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
+            end
+            @post_tags = PostTag.where(post_id: toggle_params[:post_id])
+            @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+            @tags = Tag.where(id: @post_tag_ids)
+            render "toggle_tags"
         end
-        @post_tags = PostTag.where(post_id: toggle_params[:post_id])
-        @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
-        @tags = Tag.where(id: @post_tag_ids)
         render json: { tags: @tags, post_id: params[:post_id]}
     end
 
     # ======= GET /toggle_tag =======
-    def toggle_tag
-        puts "\n\n******* toggle_tag *******"
-        puts " ** toggle_params: #{toggle_params.inspect}"
+    def toggle_tags
+        puts "\n\n******* toggle_tags *******"
 
-        # == check post for selected tag
-        @post_tag = PostTag.where(post_id: toggle_params[:post_id], tag_id: toggle_params[:tag_id]).first
+        ids = params[:ids].split("_")
+        tag_id = ids[1]
+        @post_id = ids[0]
+        puts " ** tag_id: #{tag_id.inspect}"
+        puts " ** @post_id: #{@post_id.inspect}"
 
-        # == remove previously assigned tag
+        # # == check post for selected tag
+        @post_tag = PostTag.where(post_id: @post_id, tag_id: tag_id).first
+        #
+        # # == remove previously assigned tag
         if @post_tag
             puts "******* HAS TAG (delete tag) *******"
             PostTag.destroy(@post_tag.id.to_i)
-            @post_tags = PostTag.where(post_id: toggle_params[:post_id])
+            @post_tags = PostTag.where(post_id: @post_id)
             @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+        #     puts " ** @post_tag_ids: #{@post_tag_ids.inspect}"
             @tags = Tag.where(id: @post_tag_ids)
-            render json: { tags: @tags, post_id: toggle_params[:post_id]}
+        #     puts " ** @tags: #{@tags.inspect}"
+        #
+        #     respond_to do |format|
+        #         format.js { render layout: false, content_type: 'text/javascript' }
+        #     end
+        #
+        #
+        #     # render "toggle_tags"
+        #     # render json: { tags: @tags, post_id: toggle_params[:post_id]}
         end
     end
 
@@ -223,7 +239,7 @@ class UsersController < ApplicationController
 
         def toggle_params
           puts "******* toggle_params *******"
-          params.permit(:post_id, :tag_id, :new_tag)
+          params.permit(:post_id, :tag_id, :new_tag, :ids)
         end
 
         def user_params

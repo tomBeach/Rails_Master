@@ -1,3 +1,102 @@
+<%= javascript_include_tag "application" %>
+<% puts " ** @post_id: #{@post_id.inspect}" %>
+<% puts " ** @tags: #{@tags.inspect}" %>
+<% @tag_html = "" %>
+
+
+
+<% @tags.each_with_index do |tag, index| %>
+    <% puts " ** tag.tag_name: #{tag.tag_name.inspect}" %>
+    <% if index < @tags.length - 1 %>
+        <% @tag_html += tag.tag_name + " | " %>
+    <% else %>
+        <% @tag_html += tag.tag_name %>
+    <% end %>
+<% end %>
+<% puts " ** @tag_html: #{@tag_html.inspect}" %>
+
+// var targetEl = $("#<%= #{user_post.id}_#{tag.id} %>");
+console.log("targetEl: ", targetEl)));
+$('#targetEl').html("<%= j render(partial: 'prev') %>");
+
+ $("#items_grid").html("<%= escape_javascript(render partial: 'items_list', locals: { items: @selected } ) %>");
+
+
+<% puts "\n******* toggle_tags.js.erb *******" %>
+<% puts " ** @post_id: #{@post_id.inspect}" %>
+<% puts " ** @tags: #{@tags.inspect}" %>
+<% @tag_html = "" %>
+
+var targetEl = $('#tag-group_' + <%= @post_id %>);
+console.log("$(targetEl: ", $(targetEl)));
+
+<% @tags.each_with_index do |tag, index| %>
+    <% puts " ** tag.tag_name: #{tag.tag_name.inspect}" %>
+    <% if index < @tags.length - 1 %>
+        <% @tag_html += tag.tag_name + " | " %>
+    <% else %>
+        <% @tag_html += tag.tag_name %>
+    <% end %>
+<% end %>
+<% puts " ** @tag_html: #{@tag_html.inspect}" %>
+
+$(targetEl).html("<%= j render(partial: 'post_tags') %>");
+
+
+
+// var targetElState = $('#targetEl').attr('data-state');
+// console.log("targetElState: ", targetElState);
+//
+// var post_id = jsonData.post_id;
+// $('#tag-group_' + post_id).html("");
+// var tagText = "";
+//
+// $.each(jsonData.tags, function(index, tag) {
+//     console.log("tag: ", tag);
+//     if (index < jsonData.tags.length - 1) {
+//         tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a> | ";
+//     } else {
+//         tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a>";
+//     }
+// })
+// console.log("tagText: ", tagText);
+// $('#tag-group_' + post_id).html(tagText);
+
+
+
+
+
+
+
+
+// if (targetElState == 'prev') {
+//     var targetElState = $('#targetEl').attr('data-state', 'next');
+//     $('#targetEl').html("<%= j render(partial: 'next') %>");
+// } else if (targetElState == 'next') {
+//     var targetElState = $('#targetEl').attr('data-state', 'prev');
+//     $('#targetEl').html("<%= j render(partial: 'prev') %>");
+// }
+
+
+# ======= GET /toggle_tag =======
+def toggle_tag
+    puts "\n\n******* toggle_tag *******"
+    puts " ** toggle_params: #{toggle_params.inspect}"
+
+    == check post for selected tag
+    @post_tag = PostTag.where(post_id: toggle_params[:post_id], tag_id: toggle_params[:tag_id]).first
+
+    # == remove previously assigned tag
+    if @post_tag
+        puts "******* HAS TAG (delete tag) *******"
+        PostTag.destroy(@post_tag.id.to_i)
+        @post_tags = PostTag.where(post_id: toggle_params[:post_id])
+        @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+        @tags = Tag.where(id: @post_tag_ids)
+        render json: { tags: @tags, post_id: toggle_params[:post_id]}
+    end
+end
+
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>

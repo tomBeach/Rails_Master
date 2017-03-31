@@ -16,7 +16,6 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -27,21 +26,15 @@ gem 'jbuilder', '~> 2.5'
 # devise authentication
 gem 'devise'
 
-# switch to postgres per heroku instructions
+# required by heroku
 gem 'pg'
 
 # gems for photo uploads/storage
-# gem 'paperclip', :git=> 'https://github.com/thoughtbot/paperclip', :ref => '523bd46c768226893f23889079a7aa9c73b57d68'
 gem 'paperclip', '~> 5'
 gem 'aws-sdk', '~> 2'
-gem 'http'
-gem 'httparty'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# geolocation methods
 gem 'geocoder'
+gem 'httparty'
+gem 'http'
 
 group :development do
   gem 'rb-readline'
@@ -49,7 +42,7 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '~> 3.0.5'
-  # Spring keeps app running in  background (see https://github.com/rails/spring)
+  # Spring keeps app running in background (see https://github.com/rails/spring)
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end

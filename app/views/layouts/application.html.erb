@@ -22,6 +22,14 @@
             <%= yield %>
         </div>
 
+        <!-- == content == -->
+        <div id="content" class="section">
+            <%= link_to 'Toggle State', "/toggle_tags/1_3", remote: true %>
+            <div id="targetEl" data-state="prev">
+                <p>data-state initialized to: prev</p>
+            </div>
+        </div>
+
         <!-- == footer == -->
         <div id="footer" class="section">
             <% if notice %>

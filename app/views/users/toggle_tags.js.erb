@@ -1,0 +1,14 @@
+<%# /app/views/users/toggle_tags.js.erb %>
+
+<% puts "\n******* toggle_test.js.erb *******" %>
+
+var targetElState = $('#targetEl').attr('data-state');
+console.log("targetElState: ", targetElState);
+
+if (targetElState == 'prev') {
+    var targetElState = $('#targetEl').attr('data-state', 'next');
+    $('#targetEl').html("<%= j render(partial: 'next') %>");
+} else if (targetElState == 'next') {
+    var targetElState = $('#targetEl').attr('data-state', 'prev');
+    $('#targetEl').html("<%= j render(partial: 'prev') %>");
+}
