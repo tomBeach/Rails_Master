@@ -114,10 +114,15 @@ class UsersController < ApplicationController
         if @post_tag
             puts "******* HAS TAG (delete tag) *******"
             @post_tag.destroy
-
             @post_tags = PostTag.where(post_id: @post_id)
             @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
-            @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
+            puts "@post_tag_ids: ", @post_tag_ids
+            if @post_tag_ids.length == 0
+                @post_no_tags = Tag.all
+            else
+                @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
+            end
+            puts "@post_no_tags: ", @post_no_tags
             @tags = Tag.where(id: @post_tag_ids)
             render json: { tags: @tags, post_no_tags: @post_no_tags, post_id: @post_id}
         end
