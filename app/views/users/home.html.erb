@@ -38,14 +38,16 @@
 
                             <!-- ======= ======= editable tags (current_user) ======= ======= -->
                             <% if current_user %>
+                                <% puts "** current_user TAGS **" %>
                                 <% if index < tags_array[0].length - 1 %>
-                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
+                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %> |
                                 <% else %>
                                     <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
                                 <% end %>
 
                             <!-- ======= ======= display tags only ======= ======= -->
                             <% else %>
+                                <% puts "** DISPLAY TAGS only **" %>
                                 <% if index < tags_array[0].length - 1 %>
                                     <%= tag.tag_name %> |
                                 <% else %>
@@ -56,7 +58,8 @@
                         <% end %>
                 <% else %>
                     <% puts " ** NO TAGS ** " %>
-                    <p class="tag-group">no tags for this post
+                    <p id="tag-group_<%= user_post_id %>" class="tag-group">no tags for this post</p>
+                    <!-- no tags for this post -->
                 <% end %>
 
                 <!-- ======= ======= tag select/create ======= ======= -->
@@ -103,25 +106,24 @@
 
 <script type="text/javascript">
 
-    // add-tag-btn, add-tag-text, add-tag-sel
-
     // ======= new or add tag =======
     $('.add-tag-btn').on('click', function(e) {
         console.log("== add-tag ==");
         e.preventDefault();
         e.stopPropagation();
+
         // == post_id from postTag[1]
         var postTag = e.currentTarget.id.split("_");
+
         // == user-created tag (text value)
         var newTag = $('#' + e.currentTarget.id).siblings('input').val();
+
         // == user-selected tag (from existing tag select box)
         var tagId = $('#' + e.currentTarget.id).siblings('select').val();
-        console.log("post_id/new/existing: ", postTag[1], newTag, tagId);
-
         if (tagId == "") {
             tagId = "ng";
         }
-        console.log("tagId: ", tagId);
+        console.log("post_id/new/existing: ", postTag[1], newTag, tagId);
 
         if ((tagId == "ng") && (newTag == "new")) {
             alert("add new tag or select existing tag");
@@ -136,6 +138,7 @@
                 console.log("*** ajax success ***");
                 console.dir(jsonData);
                 updateTags(jsonData);
+                updateTagSelect(jsonData);
             }).error(function(){
                 console.log("*** ajax error ***");
                 // handleAjaxError(jsonData);
@@ -144,28 +147,39 @@
 
     });
 
-    // ======= toggle current tag =======
-    // $('.tag').on('click', function(e) {
-    //     console.log("== toggleTag ==");
-    //     var postTag = e.currentTarget.id.split("_");
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     console.log("postTag[0]:", postTag[0]);
-    //     console.log("postTag[1]:", postTag[1]);
-    //
-    //     $.ajax({
-    //         url: "toggle_tag",
-    //         data: { post_id: postTag[0], tag_id: postTag[1] },
-    //         method: "GET",
-    //         dataType: "json"
-    //     }).success(function(jsonData){
-    //         console.log("*** ajax success ***");
-    //         updateTags(jsonData);
-    //     }).error(function(){
-    //         console.log("*** ajax error ***");
-    //     });
-    // });
+    // ======= activateTags =======
+    function activateTags() {
+        console.log("== activateTags ==");
+        $('.tag').on('click', toggleTag);
+    }
 
+    // ======= toggle current tag =======
+    function toggleTag(e) {
+        console.log("== toggleTag ==");
+        e.preventDefault();
+        e.stopPropagation();
+
+        var href = $(this).attr('href');
+
+        // == post_id from postTag[1]
+        var postTag = e.currentTarget.id.split("_");
+
+        $.ajax({
+            url: href,
+            method: "GET",
+            dataType: "json"
+        }).success(function(jsonData){
+            console.log("*** ajax success ***");
+            console.dir(jsonData);
+            updateTags(jsonData);
+            updateTagSelect(jsonData);
+        }).error(function(){
+            console.log("*** ajax error ***");
+            // handleAjaxError(jsonData);
+        });
+    }
+
+    // ======= updateTags =======
     function updateTags(jsonData) {
         console.log("== updateTags ==");
         var post_id = jsonData.post_id;
@@ -175,13 +189,34 @@
         $.each(jsonData.tags, function(index, tag) {
             console.log("tag: ", tag);
             if (index < jsonData.tags.length - 1) {
-                tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a> | ";
+                tagText += "<a id=" + post_id + "_" + tag.id + " class='tag' href='/toggle_tags/" + post_id + "_" + tag.id + "'>" + tag.tag_name + "</a> | ";
             } else {
-                tagText += "<a id=" + tag.id + " class='tag' href='#'>" + tag.tag_name + "</a>";
+                tagText += "<a id=" + post_id + "_" + tag.id + " class='tag' href='/toggle_tags/" + post_id + "_" + tag.id + "'>" + tag.tag_name + "</a>";
             }
         })
+        if (tagText == "") {
+            // tagText = "<p id='tag-group_" + post_id + "' class='tag-group'>no tags for this post</p>";
+            tagText = "no tags for this post";
+        }
         console.log("tagText: ", tagText);
+        console.log("$('#tag-group_' + post_id): ", $('#tag-group_' + post_id));
         $('#tag-group_' + post_id).html(tagText);
+        activateTags();
     }
+
+    // ======= updateTagSelect =======
+    function updateTagSelect(jsonData) {
+        console.log("== updateTagSelect ==");
+        var post_id = jsonData.post_id;
+        $('#add-tag-sel_' + post_id).html("");
+        var select_html = "<option value='' label=' '></option>"
+        for (var i = 0; i < jsonData.post_no_tags.length; i++) {
+            console.log("...post_no_tags[i]: ", jsonData.post_no_tags[i].tag_name);
+            select_html += "<option value='" + jsonData.post_no_tags[i].id + "'>" + jsonData.post_no_tags[i].tag_name + "</option>";
+        }
+        $('#add-tag-sel_' + post_id).html(select_html);
+    }
+
+    activateTags();
 
 </script>

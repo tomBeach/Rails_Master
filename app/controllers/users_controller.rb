@@ -26,6 +26,7 @@ class UsersController < ApplicationController
     def home
         puts "/n******* home *******"
         puts " ** current_user: #{current_user.inspect}"
+        puts " ** User.column_names: #{User.column_names.inspect}"
 
         @users = User.all
         @posts_array = []
@@ -61,64 +62,70 @@ class UsersController < ApplicationController
         puts "******* add_new_tag *******"
         puts " ** params: #{params.inspect}"
 
+        @post_id = params[:post_id]
+
         # == create brand new tag; add to Tags
         if params[:new_tag] != "new"
+
+            # == check if tag already exists
             check_tag = Tag.where(tag_name: params[:new_tag])
-            puts " ** check_tag: #{check_tag.inspect}"
             puts " ** check_tag.length: #{check_tag.length.inspect}"
-            puts " ** check_tag.first: #{check_tag.first.inspect}"
-            puts " ** check_tag.first[:id]: #{check_tag.first[:id].inspect}"
+
+            # == create new tag if not existing and assign to post
             if check_tag.length == 0
                 @tag = Tag.create(tag_name: params[:new_tag], tag_rank: 0)
                 @post_tag = PostTag.create(post_id: params[:post_id], tag_id: @tag[:id])
-            else
-                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: check_tag.first[:id])
+                puts " ** NEW TAG @post_tag: #{@post_tag.inspect}"
             end
-
-        # == assign existing tag
-        else
-            if params[:tag_id] != ""
-                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
-            end
-            @post_tags = PostTag.where(post_id: toggle_params[:post_id])
-            @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
-            @tags = Tag.where(id: @post_tag_ids)
-            render "toggle_tags"
         end
-        render json: { tags: @tags, post_id: params[:post_id]}
+
+        # == assign existing tag if selected from select box (not "ng")
+        if params[:tag_id] != "ng"
+
+            # == check if tag already assigned to post
+            check_tag = PostTag.where(post_id: params[:post_id], tag_id: params[:tag_id])
+            puts " ** check_tag.length: #{check_tag.length.inspect}"
+
+            if check_tag.length == 0
+                @post_tag = PostTag.create(post_id: params[:post_id], tag_id: params[:tag_id])
+                puts " ** EXISTING TAG @post_tag: #{@post_tag.inspect}"
+            end
+        end
+        @post_tags = PostTag.where(post_id: params[:post_id])
+        @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
+        @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
+        @tags = Tag.where(id: @post_tag_ids)
+        render json: { tags: @tags, post_no_tags: @post_no_tags, post_id: @post_id}
     end
 
     # ======= GET /toggle_tag =======
     def toggle_tags
         puts "\n\n******* toggle_tags *******"
 
+        # == get post_id and tag_id from combined :ids string (e.g. 1_4)
         ids = params[:ids].split("_")
-        tag_id = ids[1]
         @post_id = ids[0]
-        puts " ** tag_id: #{tag_id.inspect}"
-        puts " ** @post_id: #{@post_id.inspect}"
+        tag_id = ids[1]
 
-        # # == check post for selected tag
+        # == check post for selected tag
         @post_tag = PostTag.where(post_id: @post_id, tag_id: tag_id).first
-        #
-        # # == remove previously assigned tag
+
+        # == remove previously assigned tag
         if @post_tag
             puts "******* HAS TAG (delete tag) *******"
-            PostTag.destroy(@post_tag.id.to_i)
+            @post_tag.destroy
+
             @post_tags = PostTag.where(post_id: @post_id)
             @post_tag_ids = @post_tags.map{|pt| pt.tag_id }
-        #     puts " ** @post_tag_ids: #{@post_tag_ids.inspect}"
+            @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
             @tags = Tag.where(id: @post_tag_ids)
-        #     puts " ** @tags: #{@tags.inspect}"
-        #
-        #     respond_to do |format|
-        #         format.js { render layout: false, content_type: 'text/javascript' }
-        #     end
-        #
-        #
-        #     # render "toggle_tags"
-        #     # render json: { tags: @tags, post_id: toggle_params[:post_id]}
+            render json: { tags: @tags, post_no_tags: @post_no_tags, post_id: @post_id}
         end
+    end
+
+    # ======= GET /toggle_state =======
+    def toggle_state
+        puts "******* toggle_state *******"
     end
 
     # ======= GET /index =======

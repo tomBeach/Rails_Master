@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
     # == json routes
     get "/toggle_tags/:ids" => "users#toggle_tags"
-    # get "/toggle_tag" => "users#toggle_tag"
+    get "/toggle_state" => "users#toggle_state"
     get "/add_new_tag" => "users#add_new_tag"
 
 
