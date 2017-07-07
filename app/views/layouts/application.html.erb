@@ -14,7 +14,10 @@
         <div id="header">
             <h1>Rails Final Blog 3!</h1>
             <%= favicon_link_tag 'favicon.ico' %>
-            <%= render :partial => '/users/menu' %>
+            <div>
+                <%= render :partial => '/users/menu' %>
+                <%= render :partial => '/users/submenu' %>
+            </div>
         </div>
 
         <!-- == yield == -->
@@ -32,9 +35,6 @@
 
         <!-- == footer == -->
         <div id="footer" class="section">
-            <% if notice %>
-                <p id="notice"><%= notice %></p>
-            <% end %>
             <% if alert %>
                 <p class="alert alert-danger"><%= alert %></p>
             <% end %>

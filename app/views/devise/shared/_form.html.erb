@@ -1,6 +1,7 @@
+
+
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
     <%= devise_error_messages! %>
-
     <div id="user-data">
         <div class="data"><div class="data-label"><%= label(:fname, "firstname") %></div>
             <div class="data-value"><%= f.text_field :fname, autofocus: true %></div></div>

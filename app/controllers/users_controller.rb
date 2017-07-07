@@ -2,31 +2,15 @@ class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
     # before_action :authenticate_user!
 
-    # ======= GET /stoxx =======
-    def stoxx
-        puts "/n******* stoxx *******"
-
-        # == data format: yyyymmdd[hhmm[ss]]
-        startDate = "20170121" + "000000"
-        endDate = "20170317" + "000000"
-        symbol = "IBM"
-        remote_key = Rails.application.config.bar_chart_key
-
-        remote_url = "https://marketdata.websol.barchart.com"
-        remote_url += "/getHistory.json?key=" + remote_key + "&symbol=" + symbol
-        remote_url += "&type=daily&startDate=" + startDate + "&endDate=" + endDate
-
-        json_data = HTTParty.get(remote_url)
-        puts " ** json_data['results'].length: #{json_data['results'].length.inspect}"
-        @stock_data = json_data['results']
-
-    end
-
     # ======= GET /users =======
     def home
         puts "/n******* home *******"
         puts " ** current_user: #{current_user.inspect}"
         puts " ** User.column_names: #{User.column_names.inspect}"
+
+        # ======= ======= scopes ======= =======
+        @tomtest = User.tomtest
+        puts "** @tomtest.inspect: #{@tomtest.inspect}"
 
         @users = User.all
         @posts_array = []
@@ -54,6 +38,68 @@ class UsersController < ApplicationController
                 @posts_array << "no_post"
                 @post_tags_array << [[], []]
             end
+        end
+    end
+
+    # ======= GET /index =======
+    def index
+        puts "******* index *******"
+        # @user = User.new
+        @users = User.all
+    end
+
+    # ======= ======= ======= CRUD ======= ======= =======
+    # ======= ======= ======= CRUD ======= ======= =======
+    # ======= ======= ======= CRUD ======= ======= =======
+
+    # ======= GET /users/1 =======
+    def show
+        puts "******* show *******"
+    end
+
+    # ======= GET /users/new =======
+    def new
+        puts "******* new *******"
+        @user = User.new
+    end
+
+    # ======= GET /users/1/edit =======
+    def edit
+        puts "******* edit *******"
+    end
+
+    # ======= POST /users =======
+    def create
+        puts "******* create *******"
+        @user = User.new(user_params)
+
+        respond_to do |format|
+            if @user.save
+                format.html { redirect_to @user, notice: 'User was successfully created.' }
+            else
+                format.html { render :new }
+            end
+        end
+    end
+
+    # ======= PATCH/PUT /users/1 =======
+    def update
+        puts "******* update *******"
+        respond_to do |format|
+            if @user.update(user_params)
+                format.html { redirect_to @user, notice: 'User was successfully updated.' }
+            else
+                format.html { render :edit }
+            end
+        end
+    end
+
+    # ======= DELETE /users/1 =======
+    def destroy
+        puts "******* destroy *******"
+        @user.destroy
+        respond_to do |format|
+            format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
         end
     end
 
@@ -133,70 +179,28 @@ class UsersController < ApplicationController
         puts "******* toggle_state *******"
     end
 
-    # ======= GET /index =======
-    def index
-        puts "******* index *******"
-        # @user = User.new
-        @users = User.all
-    end
+    # ======= ======= ======= API EXAMPLE (Stoxx/HTTParty) ======= =======  =======
+    # ======= ======= ======= API EXAMPLE (Stoxx/HTTParty) ======= =======  =======
+    # ======= ======= ======= API EXAMPLE (Stoxx/HTTParty) ======= =======  =======
 
-    # ======= ======= ======= CRUD ======= =======  =======
-    # ======= ======= ======= CRUD ======= =======  =======
-    # ======= ======= ======= CRUD ======= =======  =======
+    # ======= GET /stoxx =======
+    def stoxx
+        puts "/n******* stoxx *******"
 
-    # GET /users/1
-    # GET /users/1.json
-    def show
-        puts "******* show *******"
-    end
+        # == data format: yyyymmdd[hhmm[ss]]
+        startDate = "20170121" + "000000"
+        endDate = "20170317" + "000000"
+        symbol = "IBM"
+        remote_key = Rails.application.config.bar_chart_key
 
-    # GET /users/new
-    def new
-        puts "******* new *******"
-        @user = User.new
-    end
+        remote_url = "https://marketdata.websol.barchart.com"
+        remote_url += "/getHistory.json?key=" + remote_key + "&symbol=" + symbol
+        remote_url += "&type=daily&startDate=" + startDate + "&endDate=" + endDate
 
-    # GET /users/1/edit
-    def edit
-        puts "******* edit *******"
-    end
+        json_data = HTTParty.get(remote_url)
+        puts " ** json_data['results'].length: #{json_data['results'].length.inspect}"
+        @stock_data = json_data['results']
 
-    # POST /users
-    # POST /users.json
-    def create
-        puts "******* create *******"
-        @user = User.new(user_params)
-
-        respond_to do |format|
-            if @user.save
-                format.html { redirect_to @user, notice: 'User was successfully created.' }
-            else
-                format.html { render :new }
-            end
-        end
-    end
-
-    # PATCH/PUT /users/1
-    # PATCH/PUT /users/1.json
-    def update
-        puts "******* update *******"
-        respond_to do |format|
-            if @user.update(user_params)
-                format.html { redirect_to @user, notice: 'User was successfully updated.' }
-            else
-                format.html { render :edit }
-            end
-        end
-    end
-
-    # DELETE /users/1
-    # DELETE /users/1.json
-    def destroy
-        puts "******* destroy *******"
-        @user.destroy
-        respond_to do |format|
-            format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-        end
     end
 
     # ======= ======= ======= UTILITIES ======= =======  =======
@@ -210,7 +214,7 @@ class UsersController < ApplicationController
     #   puts "******* USER OK *******"
     #   if @user && User.where(password: signin_params[:password]).first
     #       puts "\n******* PSWD OK *******"
-    #       session[:user_id] = @user.id
+    #       current_user.id = @user.id
     #       redirect_to "/home", :flash => { :success => "Welcome!" }
     #   else
     #       redirect_to "/"
@@ -227,7 +231,7 @@ class UsersController < ApplicationController
     # # ======= GET /signout =======
     # def signout
     #     puts "******* signout *******"
-    #     session[:user_id] = nil
+    #     current_user.id = nil
     #     redirect_to :home
     # end
 

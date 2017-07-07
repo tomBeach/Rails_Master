@@ -1,0 +1,14 @@
+<div id="sub-menu">
+
+    <% if user_signed_in? %>
+        <p id="subhead">
+            Welcome <strong><%= current_user.fname %></strong> !
+        </p>
+    <% end %>
+    <% if notice %>
+        <p id="notice">
+            <%= notice %>
+        </p>
+    <% end %>
+
+</div>

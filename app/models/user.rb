@@ -8,4 +8,6 @@ class User < ApplicationRecord
     validates :email, confirmation: true
     validates :email, uniqueness: true
 
+    scope :tomtest, -> { where(fname: 'Tom') }
+
 end

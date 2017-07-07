@@ -43,7 +43,7 @@ class CommentsController < ApplicationController
         puts "** params.inspect: #{params.inspect}"
         puts "** post_params.inspect: #{post_params.inspect}"
         @post = Post.find(post_params[:post_id])
-        @user = User.find(session[:user_id])
+        @user = User.find(current_user.id)
         @comment = Comment.new(post_params)
         if @comment.save
             # redirect_to([@comment.post, @comment], notice: 'Comment was successfully created.')
