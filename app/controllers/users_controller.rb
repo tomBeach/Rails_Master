@@ -4,13 +4,6 @@ class UsersController < ApplicationController
     # ======= GET /users =======
     def home
         puts "/n******* home *******"
-        puts " ** current_user: #{current_user.inspect}"
-        puts " ** User.column_names: #{User.column_names.inspect}"
-
-        puts " ** ENV['S3_REGION']: #{ENV['S3_REGION'].inspect}"
-        puts " ** ENV['S3_BUCKET']: #{ENV['S3_BUCKET'].inspect}"
-        puts " ** ENV['AWS_ACCESS_KEY_ID']: #{ENV['AWS_ACCESS_KEY_ID'].inspect}"
-        puts " ** ENV['AWS_SECRET_ACCESS_KEY']: #{ENV['AWS_SECRET_ACCESS_KEY'].inspect}"
 
         # ======= ======= scopes ======= =======
         @tomtest = User.tomtest
