@@ -3,5 +3,5 @@
 
 <%= render 'form', photo: @photo %>
 
-<%= link_to 'Show', @photo %> |
+<%= link_to 'Show', user_photo_path(@user, @photo) %> |
 <%= link_to "Back", request.referer.present? ? request.referer : "/home" %>

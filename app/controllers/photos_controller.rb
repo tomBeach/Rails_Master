@@ -1,4 +1,5 @@
 class PhotosController < ApplicationController
+    before_action :set_user
     before_action :set_photo, only: [:show, :edit, :update, :destroy]
     before_action :set_s3_direct_post, only: [:new, :edit, :create, :update]
 
@@ -13,6 +14,7 @@ class PhotosController < ApplicationController
 
     def edit
         puts"\n******* edit *******"
+        @new_flag = false
     end
 
     def update
@@ -26,6 +28,7 @@ class PhotosController < ApplicationController
 
     def new
         puts"\n******* new *******"
+        @new_flag = true
         @photo = Photo.new(user_id: current_user.id)
         puts"** @photo: #{@photo.inspect}"
     end
@@ -58,6 +61,12 @@ class PhotosController < ApplicationController
                 acl: 'public-read'
             )
             puts"** @s3_direct_post: #{@s3_direct_post.inspect}"
+        end
+        def set_user
+            puts "\n******* set_user *******"
+            if current_user
+                @user = current_user
+            end
         end
         def set_photo
             puts "\n******* set_photo *******"

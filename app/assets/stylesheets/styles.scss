@@ -93,6 +93,7 @@ body {
 .photo-box > a > .full {
     float: left;
     width: auto;
+    max-width: 320px;
     height: 400px;
     margin: 10px;
 }
@@ -125,69 +126,55 @@ body {
     width: 30%;
 }
 
-/* ======= ======= =======  signin-signup  ======= ======= ======= */
-input {
-    margin-right: 20px;
-    font-size: 18px;
-}
-input[type="button"], input[type="submit"] {
-    width: 100px;
-    height: 60px;
-    margin: 10px;
-    font-size: 32px;
-}
-#signup {
-    // display: none;
-}
-.new-user {
-    width: 70%
-}
-
 /* ======= ======= =======  content  ======= ======= ======= */
 #content {
     border: 2px solid darkorange;
 }
 
-/* ======= ======= =======  profile  ======= ======= ======= */
+/* ======= ======= =======  forms  ======= ======= ======= */
+.new_user {
+    width: 80%;
+}
 .data {
     margin: 10px;
 }
-.data-label, .data-value {
+.data-link > a {
+    margin-left: 5px;
+}
+.data-label, .data-value, .pswd-value {
     margin: 0 5px;
     display: inline-block;
 }
 .data-label {
-    width: 160px;
+    float: left;
+    width: 40%;
     text-align: right;
     font-size: 16px;
 }
-.data-value {
-    width: 50%;
-    font-size: 22px;
+.data-value, .pswd-value {
+    width: 55%;
+    font-size: 18px;
     color: purple;
 }
-.data-value > a {
-    font-size: 16px;
-    text-decoration: none;
+.pswd-value {
+    float: left;
+    width: 30%;
 }
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+.button_1 {
+    width: 80px;
+    height: 30px;
+    margin-left: 5px;
+    font-size: 16px;
+}
+
+/* ======= ======= =======  details  ======= ======= ======= */
 .info-text {
     margin: 20px;
-    font-size: 22px;
-}
-#content_type {
-    width: 180px;
-    height: 30px;
-    margin: 10px 0;
-    font-size: 16px;
-}
-input[type="submit"] {
-    width: 180px;
-    height: 30px;
-    margin: 10px 0;
-    font-size: 16px;
-    background-color: #eee;
-    border: 1px solid black;
-    border-radius: 5px;
+    font-size: 18px;
 }
 #photo-button {
     width: 180px;

@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
-    # before_action :authenticate_user!
 
     # ======= GET /users =======
     def home
         puts "/n******* home *******"
         puts " ** current_user: #{current_user.inspect}"
         puts " ** User.column_names: #{User.column_names.inspect}"
+
+        puts " ** ENV['S3_REGION']: #{ENV['S3_REGION'].inspect}"
+        puts " ** ENV['S3_BUCKET']: #{ENV['S3_BUCKET'].inspect}"
+        puts " ** ENV['AWS_ACCESS_KEY_ID']: #{ENV['AWS_ACCESS_KEY_ID'].inspect}"
+        puts " ** ENV['AWS_SECRET_ACCESS_KEY']: #{ENV['AWS_SECRET_ACCESS_KEY'].inspect}"
 
         # ======= ======= scopes ======= =======
         @tomtest = User.tomtest
@@ -207,6 +211,12 @@ class UsersController < ApplicationController
     # ======= ======= ======= UTILITIES ======= =======  =======
     # ======= ======= ======= UTILITIES ======= =======  =======
 
+    # ======= geocode_address =======
+    def geocode_address
+      self.latlon = Geocoder.new(request.ip)
+      puts " ** self.latlon: #{self.latlon.inspect}"
+    end
+
     # ======= GET /user =======
     # def signin
     #   puts "******* signin *******"
@@ -233,12 +243,6 @@ class UsersController < ApplicationController
     #     puts "******* signout *******"
     #     current_user.id = nil
     #     redirect_to :home
-    # end
-
-    # ======= geocode_address =======
-    # def geocode_address
-    #   self.latlon = Geocoder.new(request.ip)
-    #   puts " ** self.latlon: #{self.latlon.inspect}"
     # end
 
     private

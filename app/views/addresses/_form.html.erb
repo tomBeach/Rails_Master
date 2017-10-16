@@ -1,0 +1,34 @@
+<%= form_for(@user, @address) do |f| %>
+    <% if user.errors.any? %>
+        <div id="error_explanation">
+        <h2><%= pluralize(user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+        <% user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+        <% end %>
+        </ul>
+        </div>
+    <% end %>
+
+    <div id="user-data">
+        <div class="data">
+            <div class="data-label"><%= label(:street, "street") %></div>
+            <div class="data-value"><%= f.text_field :street %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= label(:city, "lastname") %></div>
+            <div class="data-value"><%= f.text_field :city %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= label(:state, "state") %></div>
+            <div class="data-value"><%= f.text_field :state %></div>
+        </div>
+        <div class="data">
+            <div class="data-label"><%= label(:zip, "zip") %></div>
+            <div class="data-value"><%= f.text_field :zip %></div>
+        </div>
+        <div class="data">
+            <%= f.submit %>
+        </div>
+    </div>
+<% end %>

@@ -63,4 +63,4 @@ gem 'tzinfo'
 gem 'tzinfo-data'
 
 # recommended by heroku
-ruby '2.2.5'
+ruby '2.4.0'
