@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-    # ======= GET /users =======
+    # ======= home =======
     def home
-        puts "/n******* home *******"
+        puts "\n******* home *******"
 
         # ======= ======= scopes ======= =======
         @tomtest = User.tomtest
@@ -182,7 +182,7 @@ class UsersController < ApplicationController
 
     # ======= GET /stoxx =======
     def stoxx
-        puts "/n******* stoxx *******"
+        puts "\n******* stoxx *******"
 
         # == data format: yyyymmdd[hhmm[ss]]
         startDate = "20170121" + "000000"

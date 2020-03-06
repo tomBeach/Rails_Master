@@ -11,3 +11,5 @@ class CreateUsers < ActiveRecord::Migration[5.0]
     end
   end
 end
+
+# rails generate model User firstname:string lastname:string email:string username:string password:string

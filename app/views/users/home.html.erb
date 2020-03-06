@@ -16,88 +16,95 @@
     <!-- ======= ======= users loop ======= ======= -->
     <% @users.each_with_index do |user, index| %>
         <% user_post = @posts_array[index] %>
-        <% user_post_id = user_post[:id] %>
-        <% tags_array = @post_tags_array[index] %>
-        <!-- <% puts "\n\n ** user_post: #{user_post.inspect}" %> -->
+        <% puts "user_post: #{user_post.inspect}" %>
+        <% if user_post != "no_post" %>
+            <% user_post_id = user_post[:id] %>
+            <% puts "user_post_id: #{user_post_id.inspect}" %>
+            <% tags_array = @post_tags_array[index] %>
 
-        <!-- ======= ======= user ======= ======= -->
-        <div class="user-box">
-            <div class="tag-box">
+            <!-- ======= ======= user ======= ======= -->
+            <div class="user-box">
+                <div class="tag-box">
 
-            <!-- ======= ======= first post ======= ======= -->
-            <% if user_post != "no_post" %>
-                <!-- <% puts " ** tags_array[0].length: #{tags_array[0].length}" %>
-                <% puts " ** tags_array[1].length: #{tags_array[1].length}" %> -->
+                <!-- ======= ======= first post ======= ======= -->
+                <% if user_post != "no_post" %>
+                    <!-- <% puts " ** tags_array[0].length: #{tags_array[0].length}" %>
+                    <% puts " ** tags_array[1].length: #{tags_array[1].length}" %> -->
 
-                <!-- ======= ======= tags ======= ======= -->
-                <% if tags_array[0].length > 0 %>
-                    <p id="tag-group_<%= user_post.id %>" class="tag-group">
-                        <% tags_array[0].each_with_index do |tag, index| %>
-                            <% puts " ** tag: #{tag.inspect}" %>
-                            <% tag_ids = "#{user_post.id}_#{tag.id}"  %>
+                    <!-- ======= ======= tags ======= ======= -->
+                    <% if tags_array[0].length > 0 %>
+                        <p id="tag-group_<%= user_post.id %>" class="tag-group">
+                            <% tags_array[0].each_with_index do |tag, index| %>
+                                <% puts " ** tag: #{tag.inspect}" %>
+                                <% tag_ids = "#{user_post.id}_#{tag.id}"  %>
 
-                            <!-- ======= ======= editable tags (current_user) ======= ======= -->
-                            <% if current_user %>
-                                <% puts "** current_user TAGS **" %>
-                                <% if index < tags_array[0].length - 1 %>
-                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %> |
+                                <!-- ======= ======= editable tags (current_user) ======= ======= -->
+                                <% if current_user %>
+                                    <% puts "** current_user TAGS **" %>
+                                    <% if index < tags_array[0].length - 1 %>
+                                        <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %> |
+                                    <% else %>
+                                        <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
+                                    <% end %>
+
+                                <!-- ======= ======= display tags only ======= ======= -->
                                 <% else %>
-                                    <%= link_to tag.tag_name, "/toggle_tags/#{tag_ids}", {id: tag_ids, class: "tag", remote: true, :html => {:'data-type' => 'script/javascript'}} %>
+                                    <% puts "** DISPLAY TAGS only **" %>
+                                    <% if index < tags_array[0].length - 1 %>
+                                        <%= tag.tag_name %> |
+                                    <% else %>
+                                        <%= tag.tag_name %>
+                                    <% end %>
                                 <% end %>
 
-                            <!-- ======= ======= display tags only ======= ======= -->
-                            <% else %>
-                                <% puts "** DISPLAY TAGS only **" %>
-                                <% if index < tags_array[0].length - 1 %>
-                                    <%= tag.tag_name %> |
-                                <% else %>
-                                    <%= tag.tag_name %>
-                                <% end %>
                             <% end %>
-
-                        <% end %>
-                <% else %>
-                    <% puts " ** NO TAGS ** " %>
-                    <p id="tag-group_<%= user_post_id %>" class="tag-group">no tags for this post</p>
-                    <!-- no tags for this post -->
-                <% end %>
-
-                <!-- ======= ======= tag select/create ======= ======= -->
-                <p id="input-group_<%= user_post.id %>" class="input-group">
-                    <% tag_name_ids = [] %>
-                    <% tags_array[1].each do |tag| %>
-                        <% tag_name_ids << [tag.tag_name, tag.id] %>
-                    <% end %>
-
-                    <%= button_tag("add tag", { id: "add-tag-btn_#{user_post_id}", class: "tag-select add-tag-btn"  }) %>
-                    <%= text_field_tag("add-tag-text_#{user_post_id}", value = "new", { class: "tag-select" }) %>
-                    <%= select_tag("add-tag-sel_#{user_post_id}", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
-                </p>
-            </div>
-
-            <% end %>
-
-            <div class="title-box">
-                <div class="name-link">
-                    <%= link_to user.fname + " " + user.lname, user_posts_path(user) %>
-                </div>
-                <div class="post-title">
-                    <% if user_post != "n" %>
-                        <%= user_post.title %>
                     <% else %>
-                        <p class="empty-text">no posts for this user</p>
+                        <% puts " ** NO TAGS ** " %>
+                        <p id="tag-group_<%= user_post_id %>" class="tag-group">no tags for this post</p>
+                        <!-- no tags for this post -->
+                    <% end %>
+
+                    <!-- ======= ======= tag select/create ======= ======= -->
+                    <p id="input-group_<%= user_post.id %>" class="input-group">
+                        <% tag_name_ids = [] %>
+                        <% tags_array[1].each do |tag| %>
+                            <% tag_name_ids << [tag.tag_name, tag.id] %>
+                        <% end %>
+
+                        <%= button_tag("add tag", { id: "add-tag-btn_#{user_post_id}", class: "tag-select add-tag-btn"  }) %>
+                        <%= text_field_tag("add-tag-text_#{user_post_id}", value = "new", { class: "tag-select" }) %>
+                        <%= select_tag("add-tag-sel_#{user_post_id}", options_for_select(tag_name_ids, 0), { class: "tag-select", :include_blank => true }) %>
+                    </p>
+                </div>
+
+                <% end %>
+
+                <div class="title-box">
+                    <div class="name-link">
+                        <%= link_to user.fname + " " + user.lname, user_posts_path(user) %>
+                    </div>
+                    <div class="post-title">
+                        <% if user_post != "n" %>
+                            <%= user_post.title %>
+                        <% else %>
+                            <p class="empty-text">no posts for this user</p>
+                        <% end %>
+                    </div>
+                </div>
+
+                <!-- ======= ======= first post ======= ======= -->
+                <div class="post-content">
+                    <% if user_post != "n" %>
+                        <%= user_post.content %>
                     <% end %>
                 </div>
-            </div>
 
-            <!-- ======= ======= first post ======= ======= -->
-            <div class="post-content">
-                <% if user_post != "n" %>
-                    <%= user_post.content %>
-                <% end %>
             </div>
-
-        </div>
+        <% else %>
+            <div class="user-box">
+                <p>There are no posts in the database. Submit one!</p>
+            </div>
+        <% end %>
     <% end %>
     <br>
     <%= link_to "Back", request.referer.present? ? request.referer : "/home" %>

@@ -10,6 +10,10 @@
         <%= form.text_field :lname, id: "lname", class: "data-value", autofocus: true %>
     </div>
     <div class="data">
+        <%= label :username, "username", class: "data-label" %>
+        <%= form.text_field :username, id: "username", class: "data-value", autofocus: true %>
+    </div>
+    <div class="data">
         <%= label :email, "email", class: "data-label" %>
         <%= form.email_field :email, id: "email", class: "data-value", autofocus: true %>
     </div>

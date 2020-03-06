@@ -8,38 +8,38 @@ class PostsController < ApplicationController
         puts " ** @user.inspect: #{@user.inspect}"
         @posts = @user.posts
 
-        # @postsArray = []
-        # @postTagsArray = []
-        # @users = User.all
-        # @users.each do |user|
-        #     posts = user.posts
-        #
-        #     # == user has at least one post
-        #     if posts.length > 0
-        #         @postsArray << posts
-        #         posts.each do |post|
-        #             @tagsArray = []
-        #             @post_tags = post.tags
-        #
-        #             # == get assigned/not assigned tags
-        #             if @post_tags.length > 0
-        #                 @post_tag_ids = @post_tags.map{|pt| pt.id }
-        #                 @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
-        #             else
-        #                 @post_no_tags = Tag.all
-        #             end
-        #             @tagsArray << [@post_tags, @post_no_tags]
-        #             puts " ** @post_tags: #{@post_tags.inspect}"
-        #             puts " ** @post_no_tags: #{@post_no_tags.inspect}"
-        #         end
-        #
-        #     # == no posts (create placeholders)
-        #     else
-        #         @postsArray << "no_post"
-        #         @tagsArray << [[], []]
-        #     end
-        #     @postTagsArray << @tagsArray
-        # end
+        @postsArray = []
+        @postTagsArray = []
+        @users = User.all
+        @users.each do |user|
+            posts = user.posts
+
+            # == user has at least one post
+            if posts.length > 0
+                @postsArray << posts
+                posts.each do |post|
+                    @tagsArray = []
+                    @post_tags = post.tags
+
+                    # == get assigned/not assigned tags
+                    if @post_tags.length > 0
+                        @post_tag_ids = @post_tags.map{|pt| pt.id }
+                        @post_no_tags = Tag.where("id NOT IN (?)", @post_tag_ids)
+                    else
+                        @post_no_tags = Tag.all
+                    end
+                    @tagsArray << [@post_tags, @post_no_tags]
+                    puts " ** @post_tags: #{@post_tags.inspect}"
+                    puts " ** @post_no_tags: #{@post_no_tags.inspect}"
+                end
+
+            # == no posts (create placeholders)
+            else
+                @postsArray << "no_post"
+                # @tagsArray << [[], []]
+            end
+            @postTagsArray << @tagsArray
+        end
     end
 
     # GET users/1/posts/1
